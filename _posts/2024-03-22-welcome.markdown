@@ -1,0 +1,8 @@
+---
+layout: post
+title: "Welcome to my new home page!"
+date: 2024-03-22 08:20:57 -0500
+categories:
+---
+
+This web page represents a little vignette of me both personally and professionally.
