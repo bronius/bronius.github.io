@@ -10,7 +10,7 @@ permalink: /professional/
 
 [PocketPM](https://mypocketpm.com): Owner/manager. <strong>PocketPM</strong> (read: "Product Manager in my pocket") is a consortium of product owners and product managers offering contract consultancy <em>Product management services à la carte</em>. We are also a hub for new product people just entering the job market.
 
-[BCSWebstudio](http://bcswebstudio.com): Owner/manager. Since 2000, BCSWebstudio has provided technological consulting and development services ranging from websites to building software for kiosks and part-time, and now, contract `Product Management`.
+[BCSWebstudio](https://bcswebstudio.com): Owner/manager. Since 2000, BCSWebstudio has provided technological consulting and development services ranging from websites to building software for kiosks and part-time, and now, contract `Product Management`.
 
 <hr>
 
