@@ -6,4 +6,4 @@ permalink: /about/
 
 Bronius Motekaitis [bronius.com](https://bronius.com/)
 
-We will rebuild!
+We (will) rebuild!
