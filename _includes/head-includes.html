@@ -1,0 +1,4 @@
+{% capture jsonld_path %}jsonld/{{ page.jsonld | default: "none" }}.html{% endcapture %}
+{% include {{ jsonld_path }} %}
+{% capture custom_css %}css/{{ page.custom_css | default: "none" }}.html{% endcapture %}
+{% include {{ custom_css }} %}
