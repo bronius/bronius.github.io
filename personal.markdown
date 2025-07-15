@@ -1,9 +1,16 @@
 ---
 layout: page
-title: Personal
+title: About
 permalink: /about/
+jsonld: about
+custom_css: rotate.css
 ---
 
-Bronius Motekaitis [bronius.com](https://bronius.com/)
-
-We (will) rebuild!
+[Bronius Motekaitis](https://bronius.com/) is <span class="rotate">
+<span>a man of God</span>
+<span>a family man</span>
+<span>a musician</span>
+<span>an artist</span>
+<span>an IT professional</span>
+<span>an aspiring product manager</span>
+</span>.

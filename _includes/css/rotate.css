@@ -1,0 +1,9 @@
+.rotate span::after {
+  content: ", ";
+}
+.rotate span:last-child::after {
+  content: "";
+}
+.rotate span:nth-last-child(2)::after {
+  content: ", and ";
+}
