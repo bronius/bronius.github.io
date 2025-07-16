@@ -3,7 +3,7 @@ layout: page
 title: About
 permalink: /about/
 jsonld: about
-custom_css: rotate.css
+custom_css: rotate
 ---
 
 [Bronius Motekaitis](https://bronius.com/) is <span class="rotate">
@@ -12,5 +12,4 @@ custom_css: rotate.css
 <span>a musician</span>
 <span>an artist</span>
 <span>an IT professional</span>
-<span>an aspiring product manager</span>
-</span>.
+<span>an aspiring product manager</span></span>.
