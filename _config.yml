@@ -37,6 +37,21 @@ plugins:
 # Google Analytics
 google_analytics: G-NLN4GRV22Z
 
+# Author information for Jekyll SEO
+author: Bronius Motekaitis
+
+# Social profiles for Jekyll SEO
+social:
+  name: Bronius Motekaitis
+  links:
+    - https://www.linkedin.com/in/bronius
+    - https://bcswebstudio.com
+    - https://recovery-kit.com
+    - https://mypocketpm.com
+    - https://www.flickr.com/photos/foryou/
+    - https://x.com/bronicat
+    - https://www.facebook.com/bronius.motekaitis
+
 # Exclude from processing.
 # The following items will not be processed, by default.
 # Any item listed under the `exclude:` key here will be automatically added to

@@ -2,8 +2,18 @@
 layout: page
 title: About
 permalink: /about/
-jsonld: about
 custom_css: rotate
+author: bronius
+seo:
+  type: Person
+  name: Bronius Motekaitis
+  job_title: Freelance Web Consultant & Fractional Product Manager
+  description: Bronius specializes in CMS rescue, web modernization, and fractional PM services.
+  links:
+    - https://www.linkedin.com/in/bronius
+    - https://bcswebstudio.com
+    - https://recovery-kit.com
+    - https://mypocketpm.com
 ---
 
 [Bronius Motekaitis](https://bronius.com/) is <span class="rotate">
