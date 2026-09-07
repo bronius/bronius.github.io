@@ -19,17 +19,16 @@ It has taken 25 years as a non-career-chasing software developer and 5 months of
 
 My professional life has always been in and around IT: software development,
 open source contribution, cloud infrastructure, solutions architecture, web
-modernization, and the practical work of helping people get unstuck.
+modernization, and helping people get unstuck.
 
 I am customer oriented because I do not love pain any more than the next person.
-The best work happens when people can tell the truth, trust each other, and
-cooperate without making every problem more painful than it already is. That is
-the spirit I try to bring to product conversations, technical discovery,
-architecture work, and delivery.
+Good work gets easier when people can tell the truth, trust each other, and
+cooperate. That is the spirit I try to bring to product conversations, technical
+discovery, architecture work, and delivery.
 
 I have also presented many times for technology communities and conferences,
-especially where real-world implementation, developer experience, product
-thinking, and cloud patterns meet.
+usually around the places where real-world implementation, developer experience,
+product thinking, and cloud patterns meet.
 
 <div class="media-placeholder">
   <strong>Talk / screenshot space</strong>

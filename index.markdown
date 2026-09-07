@@ -18,28 +18,28 @@ seo:
     - https://www.facebook.com/bronius.motekaitis
 ---
 
-I am building a life where faith, family, music, work, and community reinforce
-one another. If you are here out of curiosity or skepticism, I hope this site
-offers a quick look at a life that is still attainable: rooted, useful, joyful,
-and open to the world beyond my own front door.
+I am trying to live a life where faith, family, music, work, and community fit
+together instead of competing for separate corners. If you are here out of
+curiosity or skepticism, I hope this site gives you a quick sense of what that
+looks like in real life.
 
 <div class="intro-grid">
   <section class="intro-card">
     <h2>Music</h2>
     <p>Classical violin, choral singing, local ensembles, and a teaching studio
-    for students who need confidence as much as information.</p>
+    for students who need confidence as much as instruction.</p>
     <p><a href="/music/">Read the music story</a></p>
   </section>
   <section class="intro-card">
     <h2>Professional</h2>
     <p>Software development, open source, cloud infrastructure, solutions
-    architecture, and customer-centered problem solving.</p>
+    architecture, and practical problem solving.</p>
     <p><a href="/professional/">See the professional overview</a></p>
   </section>
   <section class="intro-card">
     <h2>Life &amp; Faith</h2>
-    <p>College Station roots, family life, faith, and the habit of paying
-    attention to how the wider world experiences things.</p>
+    <p>College Station roots, family life, faith, and the habit of looking past
+    my own assumptions.</p>
     <p><a href="/life/">Visit life &amp; faith</a></p>
   </section>
 </div>
