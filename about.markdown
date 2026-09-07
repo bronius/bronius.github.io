@@ -23,3 +23,16 @@ seo:
 <span>an artist</span>
 <span>an IT professional</span>
 <span>an aspiring product manager</span></span>.
+
+I grew up in College Station, Texas, but I have never been content to define a
+place only by what is inside its city limits. I have always been more interested
+in how the people around me experience the world: what makes things hard, what
+opens doors, what builds confidence, and what helps ordinary life become more
+beautiful.
+
+That thread runs through my family life, my faith, my music, and my professional
+work. I want to be useful where I am, honest about pain without making a home in
+it, and eager to work with others in trust and cooperation.
+
+Start with the at-a-glance pages for [music](/music/), [professional work](/professional/),
+and [life and faith](/life/).

@@ -1,0 +1,32 @@
+.intro-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  margin: 1.5rem 0;
+}
+
+.intro-card,
+.media-placeholder {
+  border: 1px solid #e8e8e8;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+.intro-card h2,
+.intro-card h3 {
+  margin-top: 0;
+}
+
+.media-placeholder {
+  background: #f8f8f8;
+  color: #666;
+  font-size: 0.95rem;
+  margin: 1.5rem 0;
+  min-height: 8rem;
+}
+
+.media-placeholder strong {
+  color: #424242;
+  display: block;
+  margin-bottom: 0.5rem;
+}
