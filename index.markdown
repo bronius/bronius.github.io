@@ -41,8 +41,50 @@ I try to live a life where faith, family, music, work, and community fit togethe
   </section>
 </div>
 
-<div class="media-placeholder">
-  <strong>Photo / screenshot space</strong>
-  A future home for a current portrait, family photo, performance photo, or
-  screenshots from talks and community work.
+<div id="flickr-photo" class="media-placeholder">
+  <strong>From the Flickr stream</strong>
+  <p class="flickr-photo-status">Loading a photo…</p>
 </div>
+
+<script>
+(function () {
+  var container = document.getElementById('flickr-photo');
+  var statusEl = container.querySelector('.flickr-photo-status');
+  var flickrUserId = '44124284196@N01';
+  var callbackName = 'renderFlickrPhoto';
+
+  function showFallback() {
+    statusEl.innerHTML = 'Photos are unavailable right now. <a href="https://www.flickr.com/photos/foryou/" target="_blank" rel="noopener">Visit the Flickr stream</a>.';
+  }
+
+  window[callbackName] = function (feed) {
+    delete window[callbackName];
+    if (!feed || !feed.items || !feed.items.length) {
+      showFallback();
+      return;
+    }
+    var photo = feed.items[Math.floor(Math.random() * feed.items.length)];
+    var imageUrl = photo.media.m.replace('_m.jpg', '_c.jpg');
+    var title = photo.title || 'A photo from the stream';
+    var link = document.createElement('a');
+    link.href = photo.link;
+    link.target = '_blank';
+    link.rel = 'noopener';
+    var img = document.createElement('img');
+    img.src = imageUrl;
+    img.alt = title;
+    img.loading = 'lazy';
+    link.appendChild(img);
+    var caption = document.createElement('p');
+    caption.textContent = title;
+    container.innerHTML = '<strong>From the Flickr stream</strong>';
+    container.appendChild(link);
+    container.appendChild(caption);
+  };
+
+  var script = document.createElement('script');
+  script.src = 'https://www.flickr.com/services/feeds/photos_public.gne?id=' + flickrUserId + '&lang=en-us&format=json&jsoncallback=' + callbackName;
+  script.onerror = showFallback;
+  document.body.appendChild(script);
+})();
+</script>
