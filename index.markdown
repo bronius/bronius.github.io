@@ -56,7 +56,7 @@ I try to live a life where faith, family, music, work, and community fit togethe
   var apiBase = 'https://api.flickr.com/services/rest/?method=flickr.people.getPhotos'
     + '&api_key=' + apiKey
     + '&user_id=' + encodeURIComponent(userId)
-    + '&extras=url_c,url_m,description'
+    + '&extras=url_c,url_z,url_n,url_m,url_s,description'
     + '&format=json&jsoncallback=' + callbackName
     + '&per_page=1';
 
@@ -72,10 +72,11 @@ I try to live a life where faith, family, music, work, and community fit togethe
   }
 
   function renderPhoto(photo) {
-    var imageUrl = photo.url_c || photo.url_m;
+    var imageUrl = photo.url_c || photo.url_z || photo.url_n || photo.url_m || photo.url_s;
     if (!imageUrl) {
-      showFallback();
-      return;
+      // Fallback: construct the URL manually using Flickr's standard pattern.
+      // Works for any public photo regardless of which size renditions exist.
+      imageUrl = 'https://live.staticflickr.com/' + photo.server + '/' + photo.id + '_' + photo.secret + '.jpg';
     }
     var title = photo.title || 'A photo from my stream';
     var description = photo.description && photo.description._content
