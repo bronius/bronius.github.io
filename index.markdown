@@ -18,16 +18,13 @@ seo:
     - https://www.facebook.com/bronius.motekaitis
 ---
 
-I am trying to live a life where faith, family, music, work, and community fit
-together instead of competing for separate corners. If you are here out of
-curiosity or skepticism, I hope this site gives you a quick sense of what that
-looks like in real life.
+I try to live a life where faith, family, music, work, and community fit together instead of competing for separate corners. If you are here out of curiosity or skepticism, I hope this site gives you a quick sense of what that looks like in real life.
 
 <div class="intro-grid">
   <section class="intro-card">
     <h2>Music</h2>
     <p>Classical violin, choral singing, local ensembles, and a teaching studio
-    for students who need confidence as much as instruction.</p>
+    boosting student confidence and skill.</p>
     <p><a href="/music/">Read the music story</a></p>
   </section>
   <section class="intro-card">

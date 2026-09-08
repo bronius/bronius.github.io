@@ -30,3 +30,9 @@
   display: block;
   margin-bottom: 0.5rem;
 }
+
+.media-placeholder img {
+  display: block;
+  height: auto;
+  max-width: 100%;
+}

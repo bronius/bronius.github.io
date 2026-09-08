@@ -6,8 +6,7 @@ custom_css: profile-sections
 ---
 
 Music has been part of my life for as long as I can remember. I grew up studying
-classical violin, have played with many local ensembles, and have usually found
-my way into the strongest chorales available to me.
+classical violin, have played with many local ensembles, and have sung with top chorales.
 
 These days that includes performing as Principal Second Violin with the
 [Brazos Civic Orchestra](https://brazoscivicorchestra.org/), staying connected
@@ -21,14 +20,13 @@ sometimes it is just the fear that everyone else already knows how this is
 supposed to work. I teach violin to help students get past those barriers.
 
 <div class="media-placeholder">
-  <strong>Performance photo space</strong>
-  Add an orchestra, chamber music, church music, or chorale photo here when a
-  suitable image is available.
+  <img src="{{ "/assets/images/bronius-young-violin.jpg" | relative_url }}"
+       alt="Bronius playing violin as a child">
 </div>
 
 ## What music has taught me
 
-- Beauty rewards discipline, but discipline should serve joy.
-- Ensemble work starts with listening.
-- Confidence grows when hard things are made understandable.
-- Local arts make a community more humane and awake.
+- **Deep, Internal Discipline:** True discipline is not an externally enforced chore; it is an internal mandate. It is the deliberate engagement of the prefrontal cortex, sacrificing immediate convenience to build structural neuroplasticity over time.
+- **Uncompromising Collaboration:** Ensemble work demands absolute synchronization without the diluting of personal accountability. True teamwork requires a heightened dual-focus: holding yourself to an unyielding standard while listening deeply to integrate with the collective.
+- **The Neurobiology of Gratification:** Meaningful satisfaction requires delayed reward. The process of repetition alters the brain's gray and white matter volume, transforming arduous physical actions into an elegant, automatic execution.
+- **Shared Neurological Resonance:** The ultimate outcome is a structural alignment between the performer and the audience. When a performance succeeds, the auditory and motor processing systems of everyone in the room lock into a singular rhythmic and emotional pulse, generating a rare, mutual intelligence.

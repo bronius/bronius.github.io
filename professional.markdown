@@ -31,7 +31,8 @@ usually around the places where real-world implementation, developer experience,
 product thinking, and cloud patterns meet.
 
 <div class="media-placeholder">
-  <strong>Talk / screenshot space</strong>
-  Add conference photos, slide screenshots, architecture diagrams, or product
-  screenshots here as they are collected.
+  <strong>Presentation @ DrupalGovCon</strong>
+  <img src="{{ "/assets/images/bronius-government-tech-conference.jpg" | relative_url }}"
+       alt="Bronius presents @ DrupalGovCon">
+  Casually engaging a packed room interested in all the facets of a successful, collaborative web deployment from devops to maintenance, dev to production.
 </div>
