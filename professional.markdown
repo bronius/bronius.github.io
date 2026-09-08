@@ -2,6 +2,7 @@
 layout: page
 title: Professional
 permalink: /professional/
+custom_css: profile-sections
 ---
 
 [Bronius on LinkedIn](https://www.linkedin.com/in/bronius): My life as a `Product Manager` and part of my network of professionals.
@@ -15,3 +16,23 @@ permalink: /professional/
 <hr>
 
 It has taken 25 years as a non-career-chasing software developer and 5 months of unrequited searching for applicable, sustainable, senior engineer positions to free myself to explore an active, defined career path. When I began exploring the title `Product Manager`, I immediately felt so confident, comfortable, and genuinely excited to be able to full apply all my talents and skills in the workplace. Looking back over my professional journey, I see that I've always enjoyed a common thread of highly engaging cross-functional teams, customer support, requirements gathering and story writing, ideating, roadmap and backlog refinement, selling vision, DX/UX/UI satisfication engineering, and LOTs of communication.
+
+My professional life has always been in and around IT: software development,
+open source contribution, cloud infrastructure, solutions architecture, web
+modernization, and helping people get unstuck.
+
+I am customer oriented because I do not love pain any more than the next person.
+Good work gets easier when people can tell the truth, trust each other, and
+cooperate. That is the spirit I try to bring to product conversations, technical
+discovery, architecture work, and delivery.
+
+I have also presented many times for technology communities and conferences,
+usually around the places where real-world implementation, developer experience,
+product thinking, and cloud patterns meet.
+
+<div class="media-placeholder">
+  <strong>Presentation @ DrupalGovCon</strong>
+  <img src="{{ "/assets/images/bronius-government-tech-conference.jpg" | relative_url }}"
+       alt="Bronius presents @ DrupalGovCon">
+  Casually engaging a packed room interested in all the facets of a successful, collaborative web deployment from devops to maintenance, dev to production.
+</div>

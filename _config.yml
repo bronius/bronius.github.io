@@ -29,6 +29,13 @@ url: "https://bronius.com" # the base hostname & protocol for your site, e.g. ht
 twitter_username: bronicat
 github_username:  bronius
 
+header_pages:
+  - about.markdown
+  - music.markdown
+  - professional.markdown
+  - life.markdown
+  - violin-studio.html
+
 # Build settings
 theme: minima
 plugins:
