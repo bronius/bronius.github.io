@@ -42,7 +42,7 @@ I try to live a life where faith, family, music, work, and community fit togethe
 </div>
 
 <div id="flickr-photo" class="media-placeholder">
-  <strong>From the Flickr stream</strong>
+  <strong>From my Flickr stream</strong>
   <p class="flickr-photo-status">Loading a photo…</p>
 </div>
 
@@ -50,24 +50,39 @@ I try to live a life where faith, family, music, work, and community fit togethe
 (function () {
   var container = document.getElementById('flickr-photo');
   var statusEl = container.querySelector('.flickr-photo-status');
-  var flickrUserId = '44124284196@N01';
+  var apiKey = '{{ site.flickr_api_key }}';
+  var userId = '{{ site.flickr_user_id }}';
   var callbackName = 'renderFlickrPhoto';
+  var apiBase = 'https://api.flickr.com/services/rest/?method=flickr.people.getPhotos'
+    + '&api_key=' + apiKey
+    + '&user_id=' + encodeURIComponent(userId)
+    + '&extras=url_c,url_m,description'
+    + '&format=json&jsoncallback=' + callbackName
+    + '&per_page=1';
 
   function showFallback() {
     statusEl.innerHTML = 'Photos are unavailable right now. <a href="https://www.flickr.com/photos/foryou/" target="_blank" rel="noopener">Visit the Flickr stream</a>.';
   }
 
-  window[callbackName] = function (feed) {
-    delete window[callbackName];
-    if (!feed || !feed.items || !feed.items.length) {
+  function loadScript(src, onError) {
+    var script = document.createElement('script');
+    script.src = src;
+    script.onerror = onError;
+    document.body.appendChild(script);
+  }
+
+  function renderPhoto(photo) {
+    var imageUrl = photo.url_c || photo.url_m;
+    if (!imageUrl) {
       showFallback();
       return;
     }
-    var photo = feed.items[Math.floor(Math.random() * feed.items.length)];
-    var imageUrl = photo.media.m.replace('_m.jpg', '_c.jpg');
-    var title = photo.title || 'A photo from the stream';
+    var title = photo.title || 'A photo from my stream';
+    var description = photo.description && photo.description._content
+      ? photo.description._content.trim()
+      : '';
     var link = document.createElement('a');
-    link.href = photo.link;
+    link.href = 'https://www.flickr.com/photos/' + userId + '/' + photo.id + '/';
     link.target = '_blank';
     link.rel = 'noopener';
     var img = document.createElement('img');
@@ -76,15 +91,30 @@ I try to live a life where faith, family, music, work, and community fit togethe
     img.loading = 'lazy';
     link.appendChild(img);
     var caption = document.createElement('p');
-    caption.textContent = title;
-    container.innerHTML = '<strong>From the Flickr stream</strong>';
+    caption.textContent = description || title;
+    container.innerHTML = '<strong>From my Flickr stream</strong>';
     container.appendChild(link);
     container.appendChild(caption);
+  }
+
+  // First call: page 1 just to learn how many pages of photos exist.
+  window[callbackName] = function (data) {
+    if (!data || data.stat !== 'ok' || !data.photos || !data.photos.pages) {
+      showFallback();
+      return;
+    }
+    var randomPage = Math.floor(Math.random() * data.photos.pages) + 1;
+    window[callbackName] = function (data2) {
+      delete window[callbackName];
+      if (!data2 || data2.stat !== 'ok' || !data2.photos || !data2.photos.photo.length) {
+        showFallback();
+        return;
+      }
+      renderPhoto(data2.photos.photo[0]);
+    };
+    loadScript(apiBase + '&page=' + randomPage, showFallback);
   };
 
-  var script = document.createElement('script');
-  script.src = 'https://www.flickr.com/services/feeds/photos_public.gne?id=' + flickrUserId + '&lang=en-us&format=json&jsoncallback=' + callbackName;
-  script.onerror = showFallback;
-  document.body.appendChild(script);
+  loadScript(apiBase + '&page=1', showFallback);
 })();
 </script>

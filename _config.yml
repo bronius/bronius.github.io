@@ -44,6 +44,10 @@ plugins:
 # Google Analytics
 google_analytics: G-NLN4GRV22Z
 
+# Flickr API key (public, read-only; safe to expose client-side). No secret needed.
+flickr_api_key: 02d9311992ebc1f98118c5bf425da9eb
+flickr_user_id: "44124284196@N01"
+
 # Author information for Jekyll SEO
 author: Bronius Motekaitis
 
