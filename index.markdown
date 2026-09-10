@@ -42,7 +42,7 @@ I try to live a life where faith, family, music, work, and community fit togethe
 </div>
 
 <div id="flickr-photo" class="media-placeholder">
-  <strong>From my Flickr stream</strong>
+  <strong>Random photo from my Flickr stream</strong> (refresh to see another)
   <p class="flickr-photo-status">Loading a photo…</p>
 </div>
 
