@@ -78,7 +78,7 @@ I try to live a life where faith, family, music, work, and community fit togethe
       // Works for any public photo regardless of which size renditions exist.
       imageUrl = 'https://live.staticflickr.com/' + photo.server + '/' + photo.id + '_' + photo.secret + '.jpg';
     }
-    var title = photo.title || 'A photo from my stream';
+    var title = photo.title || 'A random photo from my stream';
     var description = photo.description && photo.description._content
       ? photo.description._content.trim()
       : '';
@@ -93,7 +93,7 @@ I try to live a life where faith, family, music, work, and community fit togethe
     link.appendChild(img);
     var caption = document.createElement('p');
     caption.textContent = description || title;
-    container.innerHTML = '<strong>From my Flickr stream</strong>';
+    container.innerHTML = '<strong>Random photo from my Flickr stream</strong> (refresh to see another)';
     container.appendChild(link);
     container.appendChild(caption);
   }
