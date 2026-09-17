@@ -1,0 +1,32 @@
+---
+layout: post
+title: "A fresh breeze brings some neglected ideas to life"
+date: 2026-09-16 08:20:57 -0500
+categories:
+---
+
+**New!** From the project lab of Bronius Motekaitis, I present <em>Mic (d)Effects</em>:
+
+<div class="media-placeholder">
+  <img src="{{ "/assets/images/mic-deffects-screenshot-remixed.png" | relative_url }}"
+       alt="Mic (d)Effects app screenshot">
+</div>
+This app is available at <a href="https://mic.labs.bronius.com">https://mic.labs.bronius.com</a>. It runs entirely in your browser (even on mobile) and requires microphone access. No data is stored outside of your own phone at the time of building this prototype.
+
+I plan to share some projects in my "labs" subpage. There's no landing page as of yet, but I have just uploaded one project to share for you to enjoy 😊. Tell me what you think!
+
+Another project underway is way more involved: It's a semantics analysis API with plugins for WordPress and Drupal to allow vectorized, plain language semantic embedded document storage and retrieval. The analysis part is about categorzing documents based on any number of preset literary perspectives like reading level, emotional sentiment, style of writing, etc.
+
+### Background
+
+As I go from place to place, my mind wanders, and a wonder turns into an idea. I quickly jot down the idea in as much detail as I think will be necessary to both resurrect it, and critically, the feeling or impetus behind it. Location of the document is fairly loose, like Google Keep (bc it's on my phone), a new Google Docs document, or Workflowy entry... and the structure is like:
+
+```
+## Idea: (some idea title, either pithy marketing phrase or literally what it is)
+
+Paragraph1: One or two lines pitch
+
+Then one or more topic-scoped bulleted lists: Features, constraints, even possible implementation details that I think are unique to the project.
+```
+
+I've been doing this for years! In fact, I started in college with a piece of paper folded and pen in my pocket: Any idea I thought worth having interrupted my day I would log away and tuck in a box called "Thoughts in a Box." What's new is generative AI coding tools (copilot, Claude Code): After 25+ years in software development and eventually engineering, I had always stayed on the periphery with greenfield projects: Start, learn, rabbit trail in implementation...and seldom finish. But now? Now?? Shoot -- it's literally copy/paste from my idea notebook, iteratively prompt to refine it into a requirements doc, and if the project is big enough, iteratively prompt into an implementation plan, et voila!
