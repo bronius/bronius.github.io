@@ -34,5 +34,6 @@
 .media-placeholder img {
   display: block;
   height: auto;
+  margin-inline: auto;
   max-width: 100%;
 }

@@ -42,25 +42,31 @@ I try to live a life where faith, family, music, work, and community fit togethe
 </div>
 
 <div id="flickr-photo" class="media-placeholder">
-  <strong>Random photo from my Flickr stream</strong> (refresh to see another)
+  <strong>Random photo from my Flickr stream (<a href="#" class="flickr-refresh">see another</a>)</strong>
   <p class="flickr-photo-status">Loading a photo…</p>
 </div>
 
 <script>
 (function () {
   var container = document.getElementById('flickr-photo');
-  var statusEl = container.querySelector('.flickr-photo-status');
   var apiKey = '{{ site.flickr_api_key }}';
   var userId = '{{ site.flickr_user_id }}';
-  var callbackName = 'renderFlickrPhoto';
+  var requestId = 0;
+  var previousPage = null;
   var apiBase = 'https://api.flickr.com/services/rest/?method=flickr.people.getPhotos'
     + '&api_key=' + apiKey
     + '&user_id=' + encodeURIComponent(userId)
     + '&extras=url_c,url_z,url_n,url_m,url_s,description'
-    + '&format=json&jsoncallback=' + callbackName
+    + '&format=json'
     + '&per_page=1';
 
   function showFallback() {
+    var statusEl = container.querySelector('.flickr-photo-status');
+    if (!statusEl) {
+      statusEl = document.createElement('p');
+      statusEl.className = 'flickr-photo-status';
+      container.appendChild(statusEl);
+    }
     statusEl.innerHTML = 'Photos are unavailable right now. <a href="https://www.flickr.com/photos/foryou/" target="_blank" rel="noopener">Visit the Flickr stream</a>.';
   }
 
@@ -93,29 +99,65 @@ I try to live a life where faith, family, music, work, and community fit togethe
     link.appendChild(img);
     var caption = document.createElement('p');
     caption.textContent = description || title;
-    container.innerHTML = '<strong>Random photo from my Flickr stream</strong> (refresh to see another)';
+    container.innerHTML = '<strong>Random photo from my Flickr stream (<a href="#" class="flickr-refresh">see another</a>)</strong>';
     container.appendChild(link);
     container.appendChild(caption);
   }
 
-  // First call: page 1 just to learn how many pages of photos exist.
-  window[callbackName] = function (data) {
-    if (!data || data.stat !== 'ok' || !data.photos || !data.photos.pages) {
-      showFallback();
-      return;
+  function fetchPhoto() {
+    var currentRequest = ++requestId;
+    var callbackName = 'renderFlickrPhoto' + currentRequest;
+    var loadingStatus = container.querySelector('.flickr-photo-status');
+    if (loadingStatus) {
+      loadingStatus.textContent = 'Loading a photo…';
     }
-    var randomPage = Math.floor(Math.random() * data.photos.pages) + 1;
-    window[callbackName] = function (data2) {
+
+    function handleError() {
       delete window[callbackName];
-      if (!data2 || data2.stat !== 'ok' || !data2.photos || !data2.photos.photo.length) {
+      if (currentRequest === requestId) {
         showFallback();
+      }
+    }
+
+    // First call learns the number of pages; the second fetches a random page.
+    window[callbackName] = function (data) {
+      if (currentRequest !== requestId) {
+        delete window[callbackName];
         return;
       }
-      renderPhoto(data2.photos.photo[0]);
+      if (!data || data.stat !== 'ok' || !data.photos || !data.photos.pages) {
+        handleError();
+        return;
+      }
+      var pages = data.photos.pages;
+      var randomPage = Math.floor(Math.random() * pages) + 1;
+      if (pages > 1 && randomPage === previousPage) {
+        randomPage = randomPage % pages + 1;
+      }
+      previousPage = randomPage;
+      window[callbackName] = function (data2) {
+        delete window[callbackName];
+        if (currentRequest !== requestId) {
+          return;
+        }
+        if (!data2 || data2.stat !== 'ok' || !data2.photos || !data2.photos.photo.length) {
+          handleError();
+          return;
+        }
+        renderPhoto(data2.photos.photo[0]);
+      };
+      loadScript(apiBase + '&jsoncallback=' + callbackName + '&page=' + randomPage, handleError);
     };
-    loadScript(apiBase + '&page=' + randomPage, showFallback);
-  };
+    loadScript(apiBase + '&jsoncallback=' + callbackName + '&page=1', handleError);
+  }
 
-  loadScript(apiBase + '&page=1', showFallback);
+  container.addEventListener('click', function (event) {
+    if (event.target.closest('.flickr-refresh')) {
+      event.preventDefault();
+      fetchPhoto();
+    }
+  });
+
+  fetchPhoto();
 })();
 </script>
