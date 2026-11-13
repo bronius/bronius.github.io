@@ -14,6 +14,8 @@ This file is the **entry point**. Each spec below covers one topic and stands al
 | [04-assets.md](04-assets.md) | Raster vs. vector vs. live-DOM split, formats, budgets | Producing or exporting artwork |
 | [05-interaction.md](05-interaction.md) | Sign physics, scroll model, reduced motion, a11y | Writing JS or scroll behavior |
 | [06-architecture.md](06-architecture.md) | Build and stack, file layout, performance budget | Starting implementation |
+| [07-art-production.md](07-art-production.md) | Nano Banana prompts for the backdrop plates, acceptance checklist | Generating artwork |
+| [reference/preview.html](reference/preview.html) | Clickable prototype: home + subpages, placeholder art | Previewing on a phone |
 | [reference/starter.html](reference/starter.html) | Single-file prototype (corrected) | Sanity-checking the concept in a browser |
 
 ## Mockups
@@ -37,29 +39,14 @@ The mockups are AI-generated **concept art**, not pixel specs. Any text baked in
 | D3 | Layouts are separate **desktop 16:9** and **mobile portrait** compositions, not one scaled layout | Mockups |
 | D4 | **No text baked into images.** All copy and nav is live HTML | 04-assets.md |
 | D5 | The nav has five items: About, Music, Professional, Life & Faith, Violin Studio | Current site |
+| D6 | Raster art = 2 backdrop plates only (Bronius generates them with Nano Banana); all props are SVG/CSS by Claude, with raster props as a fallback only if the styles clash | 07-art-production.md |
+| D7 | The "Bronius" sign is a **toy**: a `<button>` that wobbles on every page. It is not a home link (the nav and the browser cover navigation) | Bronius |
+| D8 | **Every subpage has its own poster header**, e.g. About "WANTED", Music "NOW PLAYING", Professional "HELP WANTED", Life & Faith "NOTICE", set in front matter | Bronius |
+| D9 | **Document scroll everywhere.** The desktop board is a visual frame, not a scroll container | Bronius |
+| D10 | Violin Studio **stays external**. Off-site links get a visual cue: body links use a classic `::after` external-link glyph, and main-nav links get a more playful Western treatment (e.g. a "no turning back!" style tag or icon) | Bronius |
 
 ## Open questions
 
-1. **Sign semantics.** Should the "Bronius" sign be the home link (`<a href="/">`) that also wobbles, or a pure toy (`<button>`)? Proposal: link on subpages, wobble-only button on home.
+None open. All five original questions are resolved (D6–D10).
 
-A: Toy with wobble only.
-
-
-2. **Poster headers per page.** The About page is "WANTED". Do the other subpages get their own headers (e.g. Music "NOW PLAYING", Professional "HELP WANTED", Life & Faith "NOTICE")?
-
-A: Yes, you got it: Separate header for each.
-
-
-3. **Desktop inner scroll vs. document scroll.** See 05-interaction.md §Scroll model. Proposal: use document scroll everywhere.
-
-A: Agreed. document scroll.
-
-
-4. **Violin Studio.** It currently links out to violinstudio.bronius.com. Keep it external, or skin it?
-
-A: keep it. Add a small visual indication of going off-site for this and other off-site links in the main menu and elsewhere. Most body external links can have the traditional "external link" :content-after, but we can be a little more creative on main nav. maybe a simple, cowboy style "no turning back!" kind of imagery or text treatment.
-
-
-5. **Artwork production.** Who makes the clean, text-free layered plates (backdrop, porch frame, sign, clouds, board)? See 04-assets.md.
-
-A: more question: what do you mean by "who?"
+Still to design: the exact Western off-site treatment for nav links (D10). Claude will propose 2–3 options in the theme skeleton.
