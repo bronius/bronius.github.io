@@ -18,7 +18,8 @@ Clicking or tapping injects angular velocity into a **damped spring-pendulum** r
 - Integrate with semi-implicit Euler and clamp `dt ≤ 50 ms` (to survive tab-switch stalls).
 - **The rAF loop only runs while there's energy.** Stop when `|θ| < 0.01°` and `|θ̇| < 0.01°/s`, and restart on the next impulse. This avoids a forever-loop that drains battery.
 - Keyboard: Enter or Space triggers the same impulse.
-- Reduced motion: no idle sway. Clicking still works as a link, but there's no wobble (or at most a single ≤ 2° nudge).
+- Reduced motion: no idle sway and no wobble (or at most a single ≤ 2° nudge).
+- Semantics: a `<button>` toy on every page, not a home link (D7).
 
 ## Scroll model
 
@@ -27,7 +28,7 @@ Clicking or tapping injects angular velocity into a **damped spring-pendulum** r
 | mobile (< 768px) | The board frame disappears, parchment is full width, and **document scroll** moves it over the fixed backdrop. |
 | desktop (≥ 768px) | **Spec as written:** the outer scene is locked, and `.poster` scrolls inside the board via `overflow-y: auto`, with a styled scrollbar (`scrollbar-color` + `::-webkit-scrollbar`). |
 
-### ⚠ Proposal: document scroll on desktop too
+### Decision (D9): document scroll on desktop too
 An inner scroll container traps the wheel (it scrolls only while the pointer is over the board), hides the page's scroll position from the browser, and needs extra care for keyboard and screen readers.
 
 Alternative: keep the board frame `position: fixed` as a visual, and let the parchment column scroll with the document, clipped by a `mask-image` / `clip-path` window matching the board's inner edge. You get the same look with native scroll. (See open question 3 in DESIGN.md.)

@@ -77,7 +77,7 @@
     animation: sway var(--sway-period) ease-in-out infinite alternate; }
   @keyframes sway { from { rotate: calc(-1 * var(--sway-amp)); } to { rotate: var(--sway-amp); } }
   .sign__body { display: block; position: relative; padding-top: 30px; transform-origin: 50% 0;
-    text-decoration: none; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; }
+    text-decoration: none; cursor: pointer; user-select: none; background: none; border: 0; font: inherit; color: inherit; -webkit-tap-highlight-color: transparent; }
   .sign__body::before, .sign__body::after { content: ""; position: absolute; top: 0; width: 7px; height: 34px;
     background: repeating-linear-gradient(45deg, #d8b07a 0 4px, #6e4c23 4px 8px); border: 2px solid var(--ink); border-radius: 3px; }
   .sign__body::before { left: 20%; } .sign__body::after { right: 20%; }
@@ -198,7 +198,7 @@
 
   <header>
     <div class="sign">
-      <a class="sign__body" href="#home" aria-label="Bronius — home"><span class="sign__plank">Bronius</span></a>
+      <button class="sign__body" type="button" aria-label="Bronius (give the sign a push)"><span class="sign__plank">Bronius</span></button>
     </div>
     <nav class="cloud-nav" aria-label="Main">
       <a href="#about">About</a>
@@ -311,10 +311,7 @@
     omega += IMPULSE * (omega >= 0 ? 1 : -1);
     if (!running) { running = true; last = performance.now(); requestAnimationFrame(step); }
   }
-  sign.addEventListener('click', (e) => {
-    if (!pages[location.hash.slice(1)]) e.preventDefault();   // on home: wobble only
-    kick();
-  });
+  sign.addEventListener('click', kick);   // toy, not a link (D7)
 </script>
 </body>
 </html>

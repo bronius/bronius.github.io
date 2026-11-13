@@ -46,7 +46,7 @@ Content mapping from the current site:
 body
 ├─ div.scene[aria-hidden]   backdrop + porch frame (decorative)
 ├─ header
-│   ├─ sign                  (link or button; see open question 1)
+│   ├─ button.sign           toy, wobble only (D7)
 │   └─ nav[aria-label=Main]  cloud nav
 └─ main
     ├─ home:    section × N  (each prop = one section with heading)
