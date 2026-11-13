@@ -1,83 +1,238 @@
-# 07 — Art Production (Nano Banana prompts)
+# 07 — Art Production (Nano Banana Pro)
 
-The backdrop plates are the **only** raster art. Everything else is SVG, CSS or live HTML (see 04-assets.md). The plates must be **completely free of text and props** so the same two images serve every page.
+**Approach (D11):** every visual element is **painted raster art**, and only the text is live HTML (D4). Props are painted **blank**, cut out to transparent images, and HTML text is laid over them, so one plank image serves every trail sign.
 
-| Plate | Aspect | Min. export | Use |
-|---|---|---|---|
-| `town-desktop` | 16:9 | 2560 × 1440 (4K if offered) | All pages, ≥ 768px |
-| `town-mobile` | 9:16 | 1080 × 1920 (2K+ if offered) | All pages, < 768px |
+## Workflow
 
-## How to run it
-1. Use **Nano Banana Pro** if it's available (better resolution and layout control), otherwise Nano Banana.
-2. Set the aspect ratio in the UI (16:9, then 9:16). Don't rely on the prompt alone.
-3. **Plate A:** attach `mockups/home--desktop-mobile.jpg` as a style reference and paste Prompt A. Editing from the mockup keeps the style locked; generating from scratch tends to drift.
-4. **Plate B:** attach *your Plate A result* (not the mockup) and paste Prompt B, so the two crops match.
-5. Check every output against the checklist at the bottom. Re-roll or follow up with "remove the ___" until it passes.
-6. Download as PNG at full resolution and commit to `redesign/art-src/`. Claude crops, encodes to AVIF/WebP and places the files.
+1. **Tool:** the Gemini app (or gemini.google.com) → model **Thinking** → **Create images**. That's Nano Banana Pro. AI Mode in Google Search uses the same model, but the Gemini app is the better workbench, since you can attach references and iterate in a thread.
+2. **Order matters:** generate **Plate A** first. Once approved, it becomes the **master style reference** for everything else.
+3. **References:** for every prompt after Plate A, attach **both** `mockups/home--desktop-mobile.jpg` **and** your approved Plate A. Nano Banana Pro accepts multiple reference images, and two references hold the style far better than one.
+4. **One asset per request.** Paste each prompt whole; they're self-contained. If the app shows an aspect-ratio control, set it to match the manifest.
+5. **Resolution:** download at the largest size offered. If an image comes out under the "Min px" in the manifest, upload it anyway and tell me, and I'll upscale it.
+6. **Visible watermark:** the Gemini app stamps a small sparkle in the bottom-right corner on Free and Pro plans. Props have a wide green margin, so I key the sparkle out with the background. On plates, it lands on the floorboards and I'll paint it out. No action needed.
+7. **Upload:** on github.com in your phone browser, switch to the `redesign` branch, open `redesign/art-src/`, then Add file → Upload files. Use the **exact filenames** below (`.png` or `.jpg` is fine).
+8. **Then I'll:** key out the green → trim → slice the stretchable pieces → encode AVIF and WebP → wire everything into the preview.
+
+## Manifest
+
+| # | File | Aspect | Min px (long edge) | What | Used for |
+|---|---|---|---|---|---|
+| A | `plate-desktop` | 16:9 | 2560 | Backdrop, no props | All pages ≥ 768px |
+| B | `plate-mobile` | 9:16 | 1920 | Backdrop, no props | All pages < 768px |
+| 1 | `sign-plank` | 16:9 | 1600 | Blank hanging sign + ropes | "Bronius" sign |
+| 2 | `cloud-bank` | 21:9 | 2400 | Wide chain of empty clouds | Desktop nav |
+| 3 | `cloud-puffs` | 16:9 | 2000 | 3 separate single clouds | Mobile nav (wraps) |
+| 4 | `trail-arrow` | 3:4 | 1400 | Blank arrow plank on post | Home "Music" |
+| 5 | `trail-plank` | 3:4 | 1400 | Blank rectangular plank on post | Home "Professional" |
+| 6 | `note-pinned` | 4:5 | 1400 | Blank parchment note, nail | Home "Life & Faith" |
+| 7 | `scroll-banner` | 21:9 | 2400 | Blank horizontal scroll | Home intro line |
+| 8 | `board-small` | 4:3 | 1600 | Small dark plank board | Home "Recent Posts" |
+| 9 | `polaroid` | 4:5 | 1400 | Empty pinned instant-photo frame | Home Flickr photo |
+| 10 | `board-frame` | 3:4 | 2000 | Big notice-board frame, empty center | Subpage frame (9-slice) |
+| 11 | `poster-sheet` | 9:16 | 2000 | Tall blank parchment, nails | Subpage poster (3-slice) |
+| 12 | `art-about` | 4:3 | 1200 | Violin + lantern vignette | About poster |
+| 13 | `art-music` | 4:3 | 1200 | Fiddle + sheet music vignette | Music poster |
+| 14 | `art-professional` | 4:3 | 1200 | Telegraph key + ledger vignette | Professional poster |
+| 15 | `art-life` | 4:3 | 1200 | Prairie chapel vignette | Life & Faith poster |
+| 16 | `offsite-tag` | 3:2 | 1000 | Tiny blank arrow tag on a nail | Off-site nav cue (D10) |
+
+Assets A and B are full scenes. Items 1–11 and 16 are cutouts on pure green. Items 12–15 are opaque framed vignettes, so they don't need keying.
 
 ---
 
-## Prompt A — Desktop plate (16:9)
+## A — Desktop plate (attach: home mockup)
 
 ```
-Using the attached image ONLY as a style reference (the left, wide panel), create a new clean background plate in exactly the same art style: 1940s Tex Avery "Droopy" Western cartoon background painting, hand-inked dark brown outlines, warm sepia, ochre and dusty desert tones, subtle cel-painted watercolor grain, soft vintage hand-painted animation look, exaggerated cartoon perspective.
+Using the attached image ONLY as a style reference (its left, wide panel), paint a new, clean background plate in exactly that art style: 1940s Tex Avery "Droopy" Western cartoon background painting, hand-inked dark-brown outlines of confident, slightly wobbly line weight, warm sepia, ochre and dusty-desert palette, subtle cel-painted watercolor grain, soft vintage hand-painted animation look, gently exaggerated cartoon perspective. Aspect ratio 16:9, highest resolution.
 
-Scene: first-person view standing on a rustic wooden porch looking out onto a quiet, empty one-horse Texas Old West main street. Weathered wooden saloons and false-front buildings line the left and right sides and recede to a central vanishing point. Open desert mesas sit on the horizon under a warm, pale-gold late-afternoon sky.
+Scene: first-person view standing on a rustic wooden porch, looking out onto a quiet, empty one-horse Texas Old West main street. Weathered wooden saloons and false-front buildings with saloon doors, a water trough and a hitching post line the left and right sides and recede to a central vanishing point. Open desert mesas on the horizon under a warm, pale-gold late-afternoon sky.
 
 Porch frame (foreground):
-- A wooden porch overhang/eave runs across the entire top edge, about the top 12% of the image. Two small iron eye-hooks are fixed to the underside of the eave, centered horizontally and about one fifth of the image width apart. NOTHING hangs from them.
-- Thick weathered wooden porch posts stand at the far left and far right edges, each about 6% of the image width.
-- A horizontal hitching rail spans between the posts at about two-thirds of the image height, kept low and thin.
-- Wooden floorboards fill the bottom 10% of the image, in perspective.
+- A heavy wooden porch overhang runs across the entire top edge, about the top 10% of the image, with visible rafters. Two small iron eye-hooks hang from its underside, centered, about one fifth of the image width apart. NOTHING hangs from them.
+- Thick weathered porch posts at the far left and far right edges, each about 6% of the image width.
+- A low rough-log hitching rail at the left and right edges only, at about two-thirds height, NOT crossing the center.
+- Wooden floorboards fill the bottom 9% of the image, in perspective.
 
-Composition rules (this is a website background; UI will be layered on top):
-- The sky directly below the center of the eave, from about 12% to 32% of image height and across the middle 60% of the width, is a calm, smooth gradient with NO clouds, birds or detail. A few soft clouds may appear only near the far left and far right.
-- The center of the street, the middle 60% of the width from the horizon down to the hitching rail, is calm, low-detail, dusty open ground with only faint texture. No objects in it.
-- Keep the right-hand third of the street fairly simple, because a large panel will cover it on some pages.
-- Even lighting, low contrast in the center, richer detail toward the edges.
+Composition rules (this is a website background; painted props and text will be layered on top):
+- Under the center of the overhang, from 10% to 32% of image height and across the middle 60% of the width: calm, smooth warm sky. No clouds, birds or detail there. A few soft clouds only near the far left and right.
+- The middle 60% of the width from the horizon down to the floorboards: calm, open, low-detail dusty street with only faint texture and a few pebbles. No objects.
+- Richer detail toward the edges, calmer and lower contrast in the center.
 
-Strictly exclude: any text, letters, numbers, words, signage, painted lettering on building facades (leave false fronts blank), logos, watermarks, signatures. No hanging sign, no wooden signboards, no trail signs, no posters, no notice boards, no parchment, no picture frames, no photos. No people, no animals, no horses, no vehicles. No user-interface elements. No border or frame around the image.
+Strictly exclude: any text, letters, numbers, words, signage or painted lettering anywhere (leave all false fronts as blank weathered boards), logos, watermarks, signatures. No hanging sign, no signboards, no trail signs, no posters, no notice boards, no parchment, no frames, no photographs. No people, animals, horses or vehicles. No UI elements. No border around the image.
 ```
 
-## Prompt B — Mobile plate (9:16)
+## B — Mobile plate (attach: approved Plate A)
 
 ```
-Using the attached image as the exact style and scene reference, recompose the same scene as a tall vertical 9:16 portrait background plate. Same art style, palette, line work, watercolor grain, lighting and buildings; it must look like the same place painted by the same artist.
+Using the attached image as the exact style and scene reference, recompose the SAME place as a tall vertical background plate, aspect ratio 9:16, highest resolution. Same artist, palette, ink line weight, watercolor grain, lighting and buildings.
 
 Porch frame:
-- The wooden eave runs across the top edge, about the top 8% of the image, with the same two small iron eye-hooks centered and about one third of the image width apart. NOTHING hangs from them.
-- Porch posts appear only as narrow slivers at the extreme left and right edges, each about 5% of the image width.
-- Floorboards fill the bottom 6% of the image.
-- No hitching rail across the middle.
+- The wooden overhang with rafters runs across the top, about the top 7% of the image, with the same two small empty iron eye-hooks, centered, about one third of the image width apart. NOTHING hangs from them.
+- Porch posts appear only as narrow slivers at the extreme left and right edges, each about 5% of the width.
+- Floorboards fill the bottom 6%.
+- No hitching rail.
 
-Composition rules (website background, UI layered on top):
-- The street recedes straight up the center of the frame to the horizon at about 40% of the image height, with buildings as narrow wedges along both sides.
-- The sky from about 8% to 25% of image height, across the middle 80% of the width, is a calm, smooth gradient with no clouds or detail.
-- The middle 85% of the width, from the horizon down to the floorboards, is calm, low-detail dusty ground with only faint texture.
+Composition rules (website background; props and text go on top):
+- The street recedes straight up the center to a horizon at about 38% of the image height, with buildings as narrow wedges along both sides.
+- From 7% to 24% of the height, across the middle 80% of the width: calm, smooth sky with no clouds.
+- The middle 85% of the width from the horizon to the floorboards: calm, low-detail dusty ground, no objects.
 
-Strictly exclude: any text, letters, numbers, words, signage, painted lettering, logos, watermarks, signatures. No hanging sign, no signboards, no trail signs, no posters, no notice boards, no parchment, no frames, no photos. No people, animals, horses or vehicles. No UI elements. No border.
+Strictly exclude: any text, letters, numbers, words, signage, painted lettering, logos, watermarks, signatures. No hanging sign, signboards, trail signs, posters, notice boards, parchment, frames or photographs. No people, animals, horses or vehicles. No UI. No border.
 ```
 
-## Follow-up fixes (paste as needed)
-- `Remove all lettering from the building facades; leave the false fronts as blank weathered wood.`
-- `Remove the clouds from the center of the sky under the eave; keep a smooth gradient there.`
+---
+
+## Cutout props (attach: home mockup + approved Plate A)
+
+Every cutout prompt below already includes these rules: a flat pure-green background, no cast shadow on the background, a wide margin, and the object blank.
+
+### 1 — `sign-plank` (16:9)
+```
+Using the attached images as the exact style reference (1940s Tex Avery Western cartoon background art, hand-inked dark-brown outlines, warm sepia and ochre palette, watercolor grain), paint ONE object: a rough-hewn, weathered wooden plank sign, wider than tall (about 3.5 : 1), with chunky grain, knots, slightly chipped corners and two iron rings on its top edge. Two thick twisted hemp ropes rise straight up from the rings to the very top edge of the image. Front view, perfectly level, lit evenly from the front.
+
+The plank face is completely BLANK: no letters, carvings, symbols or marks.
+
+Background: flat, solid, pure green (#00FF00), perfectly uniform, with no gradient, texture, shadow, reflection or green light spill on the object. The plank is centered horizontally and fills about 70% of the image width, with at least 12% empty green margin on the left, right and bottom. No text, no watermark, no border. Aspect ratio 16:9.
+```
+
+### 2 — `cloud-bank` (21:9)
+```
+Using the attached images as the exact style reference (1940s Tex Avery Western cartoon background art, hand-inked dark-brown outlines, warm cream and pale-gold tones, watercolor grain), paint ONE object: a single long, horizontal chain of fluffy cartoon cumulus clouds, about 6 : 1 wide to tall, with soft rounded billows along the top edge and a gently flattened, slightly lumpy underside. Hand-inked outline, warm cream fill with faint gold shading. The middle band of the cloud chain is smooth, even and pale, a calm area where text will be placed.
+
+The clouds are BLANK: no letters, words or symbols.
+
+Background: flat, solid, pure green (#00FF00), perfectly uniform, with no shadow, glow or green spill. The cloud chain is centered and spans about 85% of the image width, with at least 7% green margin on every side. No text, no watermark, no border. Aspect ratio 21:9.
+```
+
+### 3 — `cloud-puffs` (16:9)
+```
+Using the attached images as the exact style reference (1940s Tex Avery Western cartoon background art, hand-inked dark-brown outlines, warm cream and pale-gold tones, watercolor grain), paint THREE separate fluffy cartoon cumulus clouds side by side in a single row, each a different width (small, medium, large), each about 2.5 : 1 wide to tall, with rounded billowy tops and slightly flattened undersides, a smooth pale center area, and a hand-inked outline. The clouds do NOT touch or overlap; leave clear green space between them.
+
+All clouds are BLANK: no letters, words or symbols.
+
+Background: flat, solid, pure green (#00FF00), perfectly uniform, with no shadow, glow or green spill. At least 8% green margin around the group and at least 5% green between clouds. No text, no watermark, no border. Aspect ratio 16:9.
+```
+
+### 4 — `trail-arrow` (3:4)
+```
+Using the attached images as the exact style reference (1940s Tex Avery Western cartoon background art, hand-inked dark-brown outlines, warm sepia and ochre palette, watercolor grain), paint ONE object: an Old West trail sign, a single weathered wooden plank cut into an arrow pointing RIGHT, nailed near the top of a crooked wooden post that stands upright and ends in a small tuft of dry grass and a little dirt at its base. The plank is about 3 : 1, tilted only slightly. Front view, lit evenly.
+
+The arrow plank face is completely BLANK: no letters, carvings or marks.
+
+Background: flat, solid, pure green (#00FF00), perfectly uniform, with no cast shadow on the background and no green spill. The sign is centered, with at least 10% green margin on every side. No text, no watermark, no border. Aspect ratio 3:4.
+```
+
+### 5 — `trail-plank` (3:4)
+```
+Using the attached images as the exact style reference (1940s Tex Avery Western cartoon background art, hand-inked dark-brown outlines, warm sepia and ochre palette, watercolor grain), paint ONE object: an Old West roadside sign, a single weathered rectangular wooden plank, about 3 : 1, with chunky grain and a slightly chipped edge, nailed to the top of a sturdy upright wooden post that ends in a small tuft of dry grass at its base. Level, front view, lit evenly.
+
+The plank face is completely BLANK: no letters, carvings or marks.
+
+Background: flat, solid, pure green (#00FF00), perfectly uniform, with no cast shadow on the background and no green spill. The sign is centered, with at least 10% green margin on every side. No text, no watermark, no border. Aspect ratio 3:4.
+```
+
+### 6 — `note-pinned` (4:5)
+```
+Using the attached images as the exact style reference (1940s Tex Avery Western cartoon background art, hand-inked dark-brown outlines, warm sepia palette, watercolor grain), paint ONE object: a single sheet of aged parchment, roughly square (slightly taller than wide), with deckle-torn edges, a faint coffee-brown burned vignette around the border, a gentle curl at one lower corner, and two dark iron nail heads at the top corners holding it. Front view, flat, lit evenly. The center of the sheet is clean, smooth and evenly toned, a calm area where text will be placed.
+
+The parchment is completely BLANK: no writing, scribbles, lines or symbols.
+
+Background: flat, solid, pure green (#00FF00), perfectly uniform, with no cast shadow on the background and no green spill. The sheet is centered, with at least 10% green margin on every side. No text, no watermark, no border. Aspect ratio 4:5.
+```
+
+### 7 — `scroll-banner` (21:9)
+```
+Using the attached images as the exact style reference (1940s Tex Avery Western cartoon background art, hand-inked dark-brown outlines, warm sepia palette, watercolor grain), paint ONE object: a horizontal parchment proclamation scroll, unrolled, about 4 : 1 wide to tall, with a rolled cylinder at each end, slightly wavy top and bottom edges and a soft burned vignette. Front view, level, lit evenly. The middle 75% of the scroll is clean, smooth and evenly toned, a calm area where text will be placed.
+
+The scroll is completely BLANK: no writing, scribbles, lines or symbols.
+
+Background: flat, solid, pure green (#00FF00), perfectly uniform, with no cast shadow on the background and no green spill. Centered, spanning about 85% of the image width, with at least 7% green margin on every side. No text, no watermark, no border. Aspect ratio 21:9.
+```
+
+### 8 — `board-small` (4:3)
+```
+Using the attached images as the exact style reference (1940s Tex Avery Western cartoon background art, hand-inked dark-brown outlines, warm sepia palette, watercolor grain), paint ONE object: a small Old West notice board made of five dark, weathered horizontal wooden planks with visible gaps and grain, held together by two vertical battens, with iron nail heads at the four corners. About 4 : 3 wide to tall, level, front view, lit evenly. The plank surface is evenly dark and fairly smooth across the middle, a calm area where light-colored text will be placed.
+
+The board is completely BLANK: no papers, writing, carvings or symbols.
+
+Background: flat, solid, pure green (#00FF00), perfectly uniform, with no cast shadow on the background and no green spill. Centered, with at least 10% green margin on every side. No text, no watermark, no border. Aspect ratio 4:3.
+```
+
+### 9 — `polaroid` (4:5)
+```
+Using the attached images as the exact style reference (1940s Tex Avery Western cartoon background art, hand-inked dark-brown outlines, warm sepia palette, watercolor grain), paint ONE object: an old instant-photo print frame, cream-white with a wide bottom margin, slightly dog-eared, tilted a few degrees, pinned at the top center with a single round brass tack. The square photo window inside the frame is filled with flat pure green (#00FF00), exactly the same green as the background, with crisp straight edges.
+
+The frame is completely BLANK: no writing, caption, marks or picture.
+
+Background: flat, solid, pure green (#00FF00), perfectly uniform, with no cast shadow on the background and no green spill. Centered, with at least 10% green margin on every side. No text, no watermark, no border. Aspect ratio 4:5.
+```
+
+### 10 — `board-frame` (3:4), stretchable
+```
+Using the attached images as the exact style reference (1940s Tex Avery Western cartoon background art, hand-inked dark-brown outlines, warm sepia palette, watercolor grain), paint ONE object: a large, empty, rectangular Old West notice-board FRAME, taller than wide, built from thick dark weathered wooden planks. The frame border is the same width on all four sides (about 8% of the frame's width), with an iron nail head at each corner. Its four sides are long, straight runs of plain plank with even, repeating grain and no knots, cracks or features in the middle of each side, so the sides can be stretched. Front view, perfectly level and square, lit evenly.
+
+The INSIDE of the frame is completely filled with flat pure green (#00FF00), exactly matching the background, with crisp straight inner edges. No backing boards, papers or writing.
+
+Background: flat, solid, pure green (#00FF00), perfectly uniform, with no cast shadow on the background and no green spill. Centered, with at least 8% green margin on every side. No text, no watermark, no border. Aspect ratio 3:4.
+```
+
+### 11 — `poster-sheet` (9:16), stretchable
+```
+Using the attached images as the exact style reference (1940s Tex Avery Western cartoon background art, hand-inked dark-brown outlines, warm sepia palette, watercolor grain), paint ONE object: a tall sheet of aged parchment for a Wild West wanted poster, about 1 : 1.6, with deckle-torn left and right edges, a torn top edge, a slightly curled bottom edge, a soft burned vignette around the perimeter, and two dark iron nail heads near the top corners. Front view, flat, perfectly upright, lit evenly.
+
+The middle 60% of the sheet's height is uniform, evenly toned parchment texture with straight, consistent torn side edges and no stains, folds or features, so it can be stretched vertically. Keep any character (curl, nails, darker burn) in the top 20% and bottom 20%.
+
+The parchment is completely BLANK: no writing, title, picture, lines or symbols.
+
+Background: flat, solid, pure green (#00FF00), perfectly uniform, with no cast shadow on the background and no green spill. Centered, with at least 8% green margin on every side. No text, no watermark, no border. Aspect ratio 9:16.
+```
+
+### 16 — `offsite-tag` (3:2)
+```
+Using the attached images as the exact style reference (1940s Tex Avery Western cartoon background art, hand-inked dark-brown outlines, warm sepia palette, watercolor grain), paint ONE object: a tiny, weathered wooden arrow tag pointing RIGHT, about 3 : 1, hanging slightly askew from a single iron nail by a short loop of twine, with a little puff of cartoon dust trailing off its pointed end as if it is in a hurry to leave town. Front view, lit evenly.
+
+The tag face is completely BLANK: no letters or marks.
+
+Background: flat, solid, pure green (#00FF00), perfectly uniform, with no cast shadow on the background and no green spill. Centered, with at least 15% green margin on every side. No text, no watermark, no border. Aspect ratio 3:2.
+```
+
+---
+
+## Poster vignettes (attach: home mockup + approved Plate A)
+
+These are opaque framed pictures, so no green screen is needed.
+
+### 12–15 — template (4:3)
+Replace `[SUBJECT]` with the line for each file:
+
+| File | `[SUBJECT]` |
+|---|---|
+| `art-about` | a violin resting beside a glowing oil lantern on a wooden table |
+| `art-music` | a fiddle and bow lying across an open book of sheet music, with a few musical notes drifting up |
+| `art-professional` | an antique telegraph key, a coiled wire and an open ledger book with a quill pen |
+| `art-life` | a small white prairie chapel with a steeple on a gentle hill at golden hour, a family's wagon path leading to it |
+
+```
+Using the attached images as the exact style reference (1940s Tex Avery Western cartoon art, hand-inked dark-brown outlines, warm sepia palette, watercolor grain), paint a small framed vignette illustration: [SUBJECT]. Rendered like a hand-inked sepia engraving printed on an old wanted poster, warm brown monochrome with cream highlights and a soft glow. The vignette is a rectangle that fills the entire image edge to edge, with a thin dark inked border line around it.
+
+No text, letters, numbers, signatures or watermark. Aspect ratio 4:3.
+```
+
+---
+
+## Follow-up fixes (paste into the same thread)
+- `Remove all lettering and scribbles; keep the surface blank.`
+- `Make the background a perfectly flat pure #00FF00 with no shadow under the object.`
+- `Shrink the object so there is a wider green margin on all sides.`
+- `Keep everything identical but make the center area calmer and evenly toned.`
+- `Remove the sign hanging from the overhang; keep only the two empty hooks.`
 - `Remove the object in the middle of the street; replace it with plain dusty ground.`
-- `Remove the sign hanging from the eave; keep only the two empty iron hooks.`
-- `Keep everything identical but make the center of the image calmer and lower in contrast.`
 
-## Acceptance checklist
-- [ ] Zero text or letterforms anywhere, including fake "scribble" text (zoom in on the facades)
-- [ ] Nothing hangs from the eave; two empty hooks only
-- [ ] Clear sky band under the eave (the nav goes here)
-- [ ] Empty, calm center street (props go here)
-- [ ] No people, animals or props
-- [ ] Posts at the edges, floorboards at the bottom
-- [ ] Mobile and desktop plates read as the same place and palette
-- [ ] Full-resolution PNG, no visible AI watermark
-
-## Fallback: raster props
-If the SVG props (sign, clouds, board, trail signs) clash with the painted plate, generate them as painted cutouts. Run one prop per request, each **blank** (no text), on a flat pure `#00FF00` background for keying, in the same style, with the same reference attached. Example:
-
-```
-Using the attached image as the style reference, paint a single blank rough-hewn wooden plank sign with two rope loops on top, front view, no text or markings on it, centered on a flat solid pure green (#00FF00) background with no shadow on the background. Same 1940s Tex Avery Western cartoon style, hand-inked outlines, watercolor grain.
-```
+## Acceptance checklist (every asset)
+- [ ] No text, letters, numbers or fake scribble-text anywhere (zoom in)
+- [ ] Style matches Plate A: same ink weight, palette and grain
+- [ ] Cutouts: flat pure-green background, no cast shadow, no green tint on the object's edges
+- [ ] Cutouts: object doesn't touch the image edges
+- [ ] Stretchable pieces (10, 11): plain, featureless middle runs
+- [ ] Plates: clear sky band under the overhang, empty center street, empty hooks
+- [ ] Downloaded at the largest size offered
