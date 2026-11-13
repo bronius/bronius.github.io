@@ -41,7 +41,25 @@ The mockups are AI-generated **concept art**, not pixel specs. Any text baked in
 ## Open questions
 
 1. **Sign semantics.** Should the "Bronius" sign be the home link (`<a href="/">`) that also wobbles, or a pure toy (`<button>`)? Proposal: link on subpages, wobble-only button on home.
+
+A: Toy with wobble only.
+
+
 2. **Poster headers per page.** The About page is "WANTED". Do the other subpages get their own headers (e.g. Music "NOW PLAYING", Professional "HELP WANTED", Life & Faith "NOTICE")?
+
+A: Yes, you got it: Separate header for each.
+
+
 3. **Desktop inner scroll vs. document scroll.** See 05-interaction.md §Scroll model. Proposal: use document scroll everywhere.
+
+A: Agreed. document scroll.
+
+
 4. **Violin Studio.** It currently links out to violinstudio.bronius.com. Keep it external, or skin it?
+
+A: keep it. Add a small visual indication of going off-site for this and other off-site links in the main menu and elsewhere. Most body external links can have the traditional "external link" :content-after, but we can be a little more creative on main nav. maybe a simple, cowboy style "no turning back!" kind of imagery or text treatment.
+
+
 5. **Artwork production.** Who makes the clean, text-free layered plates (backdrop, porch frame, sign, clouds, board)? See 04-assets.md.
+
+A: more question: what do you mean by "who?"
