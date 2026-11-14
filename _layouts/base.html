@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang | default: 'en' }}">
+{% include head.html %}
+<body data-layout="{{ page.layout }}"{% if page.layout == "home" %} data-home{% endif %}>
+  <a class="skip-link" href="#main">Skip to content</a>
+  {% include scene.html %}
+  <header class="chrome">
+    {% include sign.html %}
+    {% include nav.html %}
+  </header>
+  <main id="main">
+    {{ content }}
+  </main>
+</body>
+</html>

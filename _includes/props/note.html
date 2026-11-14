@@ -1,0 +1,3 @@
+<a class="prop" href="{{ include.p.url | relative_url }}" style="--tilt:{{ include.p.tilt | default: 0 }}deg">
+  <section class="note"><h2>{{ include.p.label | escape }}</h2>{% if include.p.teaser %}<p>{{ include.p.teaser | escape }}</p>{% endif %}</section>
+</a>

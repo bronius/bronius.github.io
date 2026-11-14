@@ -1,0 +1,32 @@
+/* Markdown body inside the poster. */
+.prose { overflow-wrap: break-word; }
+.prose > * + * { margin-top: .9em; }
+.prose .lede { font-weight: 600; }
+.prose h2, .prose h3 { font-family: var(--font-display); font-weight: normal; line-height: 1.15; margin-top: 1.4em; }
+.prose h2 { font-size: 1.45rem; }
+.prose h3 { font-size: 1.2rem; }
+.prose a { text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.prose a:hover { text-decoration-thickness: 2px; }
+.prose a:focus-visible { outline: 2px dashed var(--ink); outline-offset: 2px; }
+/* Off-site cue in body copy (D10): classic glyph. Own domain is not off-site. */
+.prose a[href^="http"]:not([href*="//bronius.com"]):not([href*=".bronius.com"])::after,
+.prose a[href*="violinstudio.bronius.com"]::after { content: "\2009\2197"; font-size: .85em; text-decoration: none; display: inline-block; }
+.prose ul, .prose ol { padding-left: 1.3em; }
+.prose ul { list-style: "\2605\2002"; }   /* sheriff-star bullets */
+.prose ul li::marker { color: var(--ink-soft); font-size: .8em; }
+.prose ol { list-style: decimal; }
+.prose li + li { margin-top: .5em; }
+.prose hr { border: 0; border-top: 3px double var(--ink); margin-block: 1.6em; }
+.prose code { font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; font-size: .86em;
+  background: rgb(43 29 18 / .08); padding: .05em .3em; border-radius: 3px; }
+.prose pre { background: rgb(43 29 18 / .08); padding: .8em 1em; border-radius: 4px; overflow-x: auto; font-size: .9em; line-height: 1.45; }
+.prose pre code { background: none; padding: 0; font-size: inherit; }
+.prose blockquote { border-left: 3px solid var(--ink-soft); padding-left: 1em; font-style: italic; }
+.prose img { margin-inline: auto; }
+/* Photos in content (legacy .media-placeholder blocks): a print tacked to the poster. */
+.prose .media-placeholder { background: #fbf5e6; padding: 10px 10px 12px; margin-block: 1.6em; rotate: -.8deg;
+  box-shadow: 0 1px 2px rgb(43 29 18 / .25), 0 6px 12px rgb(43 29 18 / .18); font-size: .9rem; font-style: italic; color: var(--ink-soft); }
+.prose .media-placeholder:nth-of-type(even) { rotate: .8deg; }
+.prose .media-placeholder strong { display: block; font-family: var(--font-display); font-style: normal; font-weight: normal; color: var(--ink); margin-bottom: .4em; }
+.prose .media-placeholder img { width: 100%; margin-bottom: .5em; }
+.post-meta { font-style: italic; color: var(--ink-soft); text-align: center; margin-top: -.4em; }

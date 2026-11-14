@@ -2,7 +2,11 @@
 layout: page
 title: About
 permalink: /about/
-custom_css: rotate
+poster:
+  header: WANTED
+  subhead: BRONIUS MOTEKAITIS
+  art: art-about
+  alt: A violin resting beside a glowing oil lantern
 author: bronius
 seo:
   type: Person

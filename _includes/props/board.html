@@ -1,0 +1,9 @@
+{%- assign cfg = site.data.home.posts -%}
+<section class="board-small" aria-labelledby="posts-h">
+  <h2 id="posts-h">{{ cfg.title | default: "Recent Posts" }}</h2>
+  <ul>
+    {%- for post in site.posts limit: cfg.limit %}
+    <li><a href="{{ post.url | relative_url }}"><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%b %-d, %Y" }}</time>{{ post.title | escape }}</a></li>
+    {%- endfor %}
+  </ul>
+</section>

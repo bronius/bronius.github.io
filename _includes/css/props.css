@@ -1,0 +1,65 @@
+{%- assign art = site.data.art -%}
+/* Painted panels: % padding would resolve against the containing block, so pads derive from --w. */
+.scroll { --w: min(480px, 100%); width: var(--w); aspect-ratio: {{ art["scroll-banner"].ratio }}; background: {% include image-set.html name="scroll-banner" %} center / 100% 100% no-repeat;
+  display: grid; place-items: center; padding: calc(var(--w) * .03) calc(var(--w) * .17) calc(var(--w) * .04); text-align: center; font-style: italic;
+  font-size: clamp(.9rem, 1.25vw, 1.05rem); line-height: 1.4; filter: drop-shadow(0 8px 10px rgb(43 29 18 / .25)); }
+
+/* Props with a measured content box (--bx/--by/--bw/--bh from art.yml), tilted by --tilt. */
+.prop { position: relative; display: block; text-decoration: none; rotate: var(--tilt, 0deg); transition: rotate .2s;
+  filter: drop-shadow(0 8px 8px rgb(43 29 18 / .28)); }
+.prop:hover, .prop:focus-visible { rotate: 0deg; }
+.prop:focus-visible { outline: none; }
+.prop:focus-visible .prop__label, .prop:focus-visible .note h2 { outline: 3px solid var(--parchment); outline-offset: 2px; border-radius: 6px; }
+.prop__label { position: absolute; left: var(--bx); top: var(--by); width: var(--bw); height: var(--bh);
+  display: grid; place-items: center; font-family: var(--font-display); line-height: 1; color: var(--ink);
+  text-shadow: 0 1px 0 rgb(255 240 210 / .4); }
+.prop--arrow { width: clamp(190px, 19vw, 240px); }
+.prop--arrow .prop__label { padding-right: 22%; font-size: clamp(1.4rem, 2.3vw, 1.9rem); }
+.prop--plank { width: clamp(190px, 19vw, 240px); }
+.prop--plank .prop__label { font-size: clamp(1.15rem, 1.9vw, 1.55rem); padding: 0 6%; }
+.note { --w: clamp(190px, 18vw, 230px); width: var(--w); aspect-ratio: {{ art["note-pinned"].ratio }}; background: {% include image-set.html name="note-pinned" %} center / 100% 100% no-repeat;
+  padding: calc(var(--w) * .2) calc(var(--w) * .14) calc(var(--w) * .16); text-align: center; display: grid; align-content: center; gap: .4em; }
+.note h2 { font-family: var(--font-display); font-weight: normal; font-size: clamp(1.4rem, 2.2vw, 1.75rem); line-height: 1.05; }
+.note p { font-size: .82rem; line-height: 1.35; color: var(--ink-soft); }
+
+/* Small board: Recent Posts */
+.board-small { --w: clamp(280px, 26vw, 340px); width: var(--w); aspect-ratio: {{ art["board-small"].ratio }}; background: {% include image-set.html name="board-small" %} center / 100% 100% no-repeat;
+  padding: calc(var(--w) * .08) calc(var(--w) * .16) calc(var(--w) * .07); color: var(--parchment); filter: drop-shadow(0 8px 10px rgb(43 29 18 / .3));
+  text-shadow: 0 1px 2px rgb(0 0 0 / .7); }
+.board-small h2 { font-family: var(--font-display); font-weight: normal; text-align: center; font-size: 1.3rem; margin-bottom: .2em; }
+.board-small li + li { border-top: 1px dashed rgb(243 228 200 / .35); }
+.board-small a { display: block; padding: .3em 0; text-decoration: none; line-height: 1.25; }
+.board-small a:hover { text-decoration: underline; }
+.board-small a:focus-visible { outline: 2px dashed var(--parchment); outline-offset: 2px; }
+.board-small time { display: block; font-size: .72rem; opacity: .8; }
+
+/* Polaroid: the painted window is transparent; the live photo sits behind it. */
+.polaroid { position: relative; width: clamp(200px, 18vw, 240px); filter: drop-shadow(0 8px 10px rgb(43 29 18 / .3)); }
+.polaroid__photo { position: absolute; left: var(--bx); top: var(--by); width: var(--bw); height: var(--bh); overflow: hidden;
+  background: radial-gradient(circle at 30% 35%, #f1d9a6 0 12%, transparent 13%),
+              linear-gradient(180deg, #e8b878 0 55%, #a7703f 55% 100%);
+  display: grid; place-items: end center; padding-bottom: 8%; font-size: .7rem; color: rgb(43 29 18 / .75); text-align: center; text-decoration: none; }
+.polaroid__photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .4s; }
+.polaroid__photo img.is-loaded { opacity: 1; }
+.polaroid__photo:focus-visible { outline: 3px solid var(--parchment); outline-offset: -3px; }
+.polaroid picture { position: relative; pointer-events: none; }
+.polaroid figcaption { position: absolute; left: 12%; right: 10%; bottom: 7%; text-align: center; rotate: 4deg; }
+.polaroid__shuffle { font-family: var(--font-display); font-size: .9rem; line-height: 1.2; padding: .1em .3em; border-radius: 4px; }
+.polaroid__shuffle span { display: inline-block; transition: rotate .4s; }
+.polaroid__shuffle:hover span, .polaroid__shuffle:focus-visible span { rotate: 180deg; }
+.polaroid__shuffle:focus-visible { outline: 2px dashed var(--ink); }
+.polaroid[aria-busy="true"] .polaroid__shuffle span { animation: spin 1s linear infinite; }
+@keyframes spin { to { rotate: 360deg; } }
+
+@media (max-width: 767.98px) {
+  .scroll { --w: 100%; font-size: .9rem; }
+  .prop { rotate: 0deg; }
+  .prop--arrow, .prop--plank { width: min(50vw, 220px); }
+  .note { --w: min(58vw, 240px); }
+  .board-small { --w: min(88vw, 340px); }
+  .polaroid { width: min(66vw, 240px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .prop, .polaroid__shuffle span, .polaroid__photo img { transition: none; }
+  .polaroid[aria-busy="true"] .polaroid__shuffle span { animation: none; }
+}

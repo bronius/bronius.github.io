@@ -1,0 +1,6 @@
+{%- comment -%} Hanging sign (D7 rev.): home link + drag toy. Outer = CSS idle sway, inner = JS spring (site.js). {%- endcomment -%}
+<div class="sign">
+  <a class="sign__body" href="{{ '/' | relative_url }}" draggable="false" style="{% include box-vars.html name='sign-plank' %}"{% if page.layout == "home" %} aria-current="page"{% endif %}>
+    {% include picture.html name="sign-plank" sizes="(max-width: 767.98px) min(76vw, 330px), clamp(250px, 27vw, 420px)" priority="high" nodrag="1" %}<span class="sign__name">Bronius<span class="sr-only">, home</span></span>
+  </a>
+</div>

@@ -1,0 +1,2 @@
+{%- comment -%} CSS image-set() of an art key's largest size. Param: name. {%- endcomment -%}
+{%- assign s = site.data.art[include.name].sizes.last -%}image-set(url("{{ s.avif | relative_url }}") type("image/avif"), url("{{ s.webp | relative_url }}") type("image/webp"))

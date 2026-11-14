@@ -1,0 +1,25 @@
+---
+# One stylesheet, zero tooling: Liquid concatenates _includes/css/* into cascade layers.
+# Geometry (ratios, slices, content boxes) comes from _data/art.yml, never hand-typed.
+---
+@layer reset, tokens, scene, components, views, utilities;
+
+{% include css/fonts.css %}
+
+/* Cross-document view transitions (progressive): chrome holds still, content cross-fades. */
+@view-transition { navigation: auto; }
+@media (prefers-reduced-motion: reduce) { @view-transition { navigation: none; } }
+
+@layer reset { {% include css/reset.css %} }
+@layer tokens { {% include css/tokens.css %} }
+@layer scene { {% include css/scene.css %} }
+@layer components {
+{% include css/sign.css %}
+{% include css/nav.css %}
+{% include css/props.css %}
+{% include css/poster.css %}
+{% include css/prose.css %}
+{% include css/rotate.css %}
+}
+@layer views { {% include css/home.css %} }
+@layer utilities { {% include css/utilities.css %} }

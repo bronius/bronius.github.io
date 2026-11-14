@@ -1,0 +1,42 @@
+{%- assign frame = site.data.art["board-frame"].slice.pct -%}
+{%- assign poster = site.data.art["poster-sheet"] -%}
+{%- comment -%} 3-slice cap heights as a fraction of the poster's WIDTH (caps stay undistorted at any width). {%- endcomment -%}
+{%- assign pw = poster.width | times: 1.0 -%}
+{%- assign cap_top = poster.slice.px.top | divided_by: pw | round: 4 -%}
+{%- assign cap_bot = poster.slice.px.bottom | divided_by: pw | round: 4 -%}
+/* Subpage: 9-slice board frame + 3-slice parchment poster (D8). */
+.sub { display: flex; justify-content: flex-end; }
+.frame { width: min(640px, 52vw); margin-right: 3vw; container-type: inline-size; border: 42px solid transparent;
+  border-image: {% include image-set.html name="board-frame" %} {{ frame.top }}% {{ frame.right }}% {{ frame.bottom }}% {{ frame.left }}% / 42px / 0 stretch;
+  background: linear-gradient(90deg, rgb(0 0 0 / .25) 0 2px, transparent 2px) 0 0 / 64px 100%,
+              linear-gradient(180deg, #4b3021, #3a2418) padding-box;
+  padding: 8px 10px 14px; filter: drop-shadow(0 14px 18px rgb(43 29 18 / .45)); }
+.poster { position: relative; border-style: solid; border-color: transparent;
+  border-width: calc(100cqi * {{ cap_top }}) 0 calc(100cqi * {{ cap_bot }}) 0;
+  border-image: {% include image-set.html name="poster-sheet" %} {{ poster.slice.pct.top }}% 0 {{ poster.slice.pct.bottom }}% 0 fill / 1 / 0 stretch;
+  padding: 0 9%; }
+/* Close (D12): a Rye "X" inked on the parchment, left of the right-hand nail. */
+.poster__close { position: absolute; z-index: 1; top: calc(100cqi * -.135); right: 15%;
+  display: grid; place-items: center; width: 1.5em; height: 1.5em; border-radius: 50%;
+  font-family: var(--font-display); font-size: clamp(1.5rem, 5.5cqi, 2.1rem); line-height: 1; color: var(--ink);
+  text-decoration: none; text-shadow: 0 1px 0 rgb(255 240 210 / .5); transition: rotate .2s, scale .2s, background-color .2s; }
+.poster__close span { translate: 0 .06em; }
+.poster__close:hover, .poster__close:focus-visible { rotate: -12deg; scale: 1.15; background-color: rgb(43 29 18 / .1); }
+.poster__close:focus-visible { outline: 2px dashed var(--ink); outline-offset: 2px; }
+.poster__header { margin-top: calc(100cqi * -.075); font-family: var(--font-display); font-weight: normal; text-align: center;
+  letter-spacing: .05em; font-size: clamp(1.9rem, 8.5cqi, 3.6rem); line-height: 1.05; text-wrap: balance;
+  padding-inline: clamp(1.6rem, 7cqi, 2.4rem); /* clear the close X */ }
+.poster__header:focus { outline: none; }
+.poster__subhead { font-family: var(--font-display); text-align: center; font-size: clamp(1rem, 4cqi, 1.3rem); line-height: 1.25;
+  margin: .2em 0 .9em; padding-bottom: .4em; border-bottom: 3px double var(--ink); text-wrap: balance; }
+.poster__art { width: min(78%, 400px); margin: 0 auto 1.3em; }
+.poster__art img { width: 100%; box-shadow: 0 2px 0 rgb(43 29 18 / .25); }
+
+@media (max-width: 767.98px) {
+  /* Board frame disappears; parchment runs edge to edge. */
+  .sub { display: block; margin-inline: -16px; }
+  .frame { width: 100%; margin: 0; border: 0; border-image: none; background: none; padding: 0; filter: none; }
+  .poster { padding-inline: 8%; }
+  .poster__header { font-size: 7.5cqi; padding-inline: 15cqi; }
+}
+@media (prefers-reduced-motion: reduce) { .poster__close { transition: none; } }

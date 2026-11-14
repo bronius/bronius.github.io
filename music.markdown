@@ -2,7 +2,11 @@
 layout: page
 title: Music
 permalink: /music/
-custom_css: profile-sections
+poster:
+  header: NOW PLAYING
+  subhead: MUSIC
+  art: art-music
+  alt: A fiddle and bow across an open book of sheet music
 ---
 
 Music has been part of my life for as long as I can remember. I grew up studying

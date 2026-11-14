@@ -1,0 +1,7 @@
+{%- comment -%} Painted polaroid; the window is transparent and the live Flickr photo sits behind it (flickr.js). {%- endcomment -%}
+{%- assign cfg = site.data.home.polaroid -%}
+<figure class="polaroid" style="{% include box-vars.html name='polaroid' %}" data-flickr-key="{{ site.flickr_api_key }}" data-flickr-user="{{ site.flickr_user_id }}">
+  <a class="polaroid__photo" href="{{ cfg.fallback_url }}" target="_blank" rel="noopener"><span class="polaroid__status">Photos from my Flickr stream</span></a>
+  {% include picture.html name="polaroid" sizes="(max-width: 767.98px) 66vw, 240px" %}
+  <figcaption><button class="polaroid__shuffle" type="button" title="Show another random photo">{{ cfg.caption | default: "Random Flickr Photo" }} <span aria-hidden="true">&#x21bb;</span></button></figcaption>
+</figure>

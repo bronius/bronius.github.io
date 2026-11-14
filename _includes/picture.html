@@ -1,0 +1,10 @@
+{%- comment -%}
+  AVIF + WebP <picture> from _data/art.yml (Liquid port of build_preview.py picture()).
+  Params: name (art key, required), sizes, class, alt, priority (high | eager | lazy*), nodrag.
+  Intrinsic width/height always set (CLS 0).
+{%- endcomment -%}
+{%- assign a = site.data.art[include.name] -%}
+{%- capture avif -%}{%- for s in a.sizes -%}{{ s.avif | relative_url }} {{ s.w }}w{%- unless forloop.last -%}, {% endunless -%}{%- endfor -%}{%- endcapture -%}
+{%- capture webp -%}{%- for s in a.sizes -%}{{ s.webp | relative_url }} {{ s.w }}w{%- unless forloop.last -%}, {% endunless -%}{%- endfor -%}{%- endcapture -%}
+{%- assign sizes = include.sizes | default: "100vw" -%}
+<picture{% if include.class %} class="{{ include.class }}"{% endif %}><source type="image/avif" srcset="{{ avif }}" sizes="{{ sizes }}"><img src="{{ a.sizes.first.webp | relative_url }}" srcset="{{ webp }}" sizes="{{ sizes }}" width="{{ a.width }}" height="{{ a.height }}" alt="{{ include.alt | escape }}" {% case include.priority %}{% when "high" %}fetchpriority="high" decoding="async"{% when "eager" %}decoding="async"{% else %}loading="lazy" decoding="async"{% endcase %}{% if include.nodrag %} draggable="false"{% endif %}></picture>

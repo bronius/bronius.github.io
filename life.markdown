@@ -2,7 +2,11 @@
 layout: page
 title: Life & Faith
 permalink: /life/
-custom_css: profile-sections
+poster:
+  header: NOTICE
+  subhead: LIFE & FAITH
+  art: art-life
+  alt: A prairie chapel on a hill at golden hour
 ---
 
 I grew up in College Station, and I still value the rootedness that comes from knowing a place over time. But my curiosity and engagement never stopped there. I am interested in how the world around experiences things, and how I respond with attention, service, and imagination.

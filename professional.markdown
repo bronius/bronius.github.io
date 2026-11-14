@@ -2,7 +2,11 @@
 layout: page
 title: Professional
 permalink: /professional/
-custom_css: profile-sections
+poster:
+  header: HELP WANTED
+  subhead: PROFESSIONAL
+  art: art-professional
+  alt: An antique telegraph key beside an open ledger
 ---
 
 [Bronius on LinkedIn](https://www.linkedin.com/in/bronius): My life as a `Product Manager` and part of my network of professionals.

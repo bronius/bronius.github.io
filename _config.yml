@@ -29,17 +29,22 @@ url: "https://bronius.com" # the base hostname & protocol for your site, e.g. ht
 twitter_username: bronicat
 github_username:  bronius
 
-header_pages:
-  - about.markdown
-  - music.markdown
-  - professional.markdown
-  - life.markdown
-  - violin-studio.html
+# Main nav lives in _data/nav.yml; home props in _data/home.yml.
 
-# Build settings
-theme: minima
+# Build settings: in-repo theme (_layouts, _includes, assets). Classic GitHub Pages = Jekyll 3.10 + whitelisted plugins.
 plugins:
   - jekyll-feed
+  - jekyll-seo-tag
+
+defaults:
+  - scope: { path: "", type: posts }
+    values:
+      layout: post
+      poster: { header: DISPATCH }
+
+kramdown:
+  input: GFM
+  hard_wrap: false
 
 # Google Analytics
 google_analytics: G-NLN4GRV22Z
@@ -74,6 +79,9 @@ social:
 exclude:
   - redesign/
   - CLAUDE.md
+  - Gemfile
+  - Gemfile.lock
+  - assets/fonts/README.md
 
 # exclude:
 #   - .sass-cache/

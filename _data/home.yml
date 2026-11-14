@@ -1,0 +1,26 @@
+# Home page props (02-layout). Edit text here; art and geometry come from _data/art.yml.
+scroll: I try to live a life where faith, family, music, work, and community fit together.
+
+# Row of three "pillars". kind: arrow | plank | note. tilt in degrees (desktop only).
+pillars:
+  - kind: arrow
+    label: Music
+    url: /music/
+    tilt: -2
+  - kind: plank
+    label: Professional
+    url: /professional/
+    tilt: 1
+  - kind: note
+    label: Life & Faith
+    teaser: Family, faith, and the community that holds it together.
+    url: /life/
+    tilt: 2
+
+posts:
+  title: Recent Posts
+  limit: 2
+
+polaroid:
+  caption: Random Flickr Photo
+  fallback_url: https://www.flickr.com/photos/foryou/

@@ -1,0 +1,6 @@
+---
+layout: page
+---
+{%- comment -%} A post is a page whose poster defaults to DISPATCH / the post title (layout: page supplies frame + close). {%- endcomment -%}
+<p class="post-meta"><time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%B %-d, %Y" }}</time></p>
+{{ content }}

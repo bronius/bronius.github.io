@@ -1,0 +1,28 @@
+---
+layout: base
+---
+{%- comment -%}
+  Subpage (D8, D12): painted board frame around a 3-slice parchment poster.
+  Front matter: poster.header (e.g. WANTED), poster.subhead, poster.art (key in _data/art.yml), poster.alt.
+{%- endcomment -%}
+{%- assign poster = page.poster -%}
+{%- assign header = poster.header | default: page.title -%}
+{%- assign subhead = poster.subhead -%}
+{%- if page.collection == "posts" -%}{%- assign subhead = poster.subhead | default: page.title -%}{%- endif -%}
+<div class="sub">
+  <div class="frame">
+    <article class="poster" aria-labelledby="poster-h">
+      <a class="poster__close" href="{{ '/' | relative_url }}" aria-label="Close, back to home"><span aria-hidden="true">X</span></a>
+      <h1 class="poster__header" id="poster-h" tabindex="-1">{{ header | escape }}{% if page.title and page.title != header %}<span class="sr-only">: {{ page.title | escape }}</span>{% endif %}</h1>
+      {%- if subhead %}
+      <p class="poster__subhead">{{ subhead | escape }}</p>
+      {%- endif %}
+      {%- if poster.art %}
+      {% include picture.html name=poster.art class="poster__art" alt=poster.alt sizes="(max-width: 767.98px) 78vw, 400px" priority="eager" %}
+      {%- endif %}
+      <div class="poster__body prose">
+        {{ content }}
+      </div>
+    </article>
+  </div>
+</div>

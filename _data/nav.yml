@@ -1,0 +1,12 @@
+# Main nav (cloud bank). `external: true` adds the painted off-site tag (D10).
+- title: About
+  url: /about/
+- title: Music
+  url: /music/
+- title: Professional
+  url: /professional/
+- title: Life & Faith
+  url: /life/
+- title: Violin Studio
+  url: https://violinstudio.bronius.com/
+  external: true

@@ -1,0 +1,7 @@
+{%- assign d = site.data.art["plate-desktop"] -%}
+<picture class="scene" aria-hidden="true">
+  <source media="(max-width: 767.98px)" type="image/avif" srcset="{% include srcset.html name='plate-mobile' fmt='avif' %}" sizes="100vw">
+  <source media="(max-width: 767.98px)" type="image/webp" srcset="{% include srcset.html name='plate-mobile' fmt='webp' %}" sizes="100vw">
+  <source type="image/avif" srcset="{% include srcset.html name='plate-desktop' fmt='avif' %}" sizes="100vw">
+  <img src="{{ d.sizes.first.webp | relative_url }}" srcset="{% include srcset.html name='plate-desktop' fmt='webp' %}" sizes="100vw" width="{{ d.width }}" height="{{ d.height }}" alt="" fetchpriority="high" decoding="async">
+</picture>

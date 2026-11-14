@@ -1,0 +1,21 @@
+{%- assign art = site.data.art -%}
+:root {
+  --ink: #2b1d12;
+  --ink-soft: #4a3423;
+  --parchment: #f3e4c8;
+  --sky: #e9c58f;
+  --font-display: "Rye", "Rye Fallback", serif;
+  --font-body: "Lora", "Lora Fallback", Georgia, serif;
+  --sway-amp: 1.2deg;
+  --sway-period: 6s;
+  /* Sign hangs from the top edge; the top --rope-crop of its height (rope) is off-screen. */
+  --sign-w: clamp(250px, 27vw, 420px);
+  --sign-h: calc(var(--sign-w) / {{ art["sign-plank"].ratio }});
+  --rope-crop: .24;
+  --nav-w: min(880px, 94vw);
+  --nav-top: calc(var(--sign-h) * (.985 - var(--rope-crop)) - 6px);
+  --chrome-h: calc(var(--nav-top) + var(--nav-w) / {{ art["cloud-bank"].ratio }} + 12px);
+}
+@media (max-width: 767.98px) {
+  :root { --sign-w: min(76vw, 330px); --nav-w: 96vw; --chrome-h: calc(var(--nav-top) + 118px); }
+}

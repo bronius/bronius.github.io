@@ -1,0 +1,10 @@
+<nav class="cloud-nav" aria-label="Main">
+  {%- for item in site.data.nav %}
+  {%- if item.external %}
+  <a class="offsite" href="{{ item.url }}">{{ item.title | escape }}{% include picture.html name="offsite-tag" sizes="40px" class="offsite__tag" priority="eager" %}<span class="sr-only"> (external site)</span></a>
+  {%- else %}
+  {%- assign url = item.url | relative_url %}
+  <a href="{{ url }}"{% if page.url == url %} aria-current="page"{% endif %}>{{ item.title | escape }}</a>
+  {%- endif %}
+  {%- endfor %}
+</nav>

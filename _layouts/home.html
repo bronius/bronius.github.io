@@ -1,0 +1,19 @@
+---
+layout: base
+---
+{%- assign home = site.data.home -%}
+<div class="home">
+  <h1 class="sr-only">{{ site.author | default: site.title }}</h1>
+  {% include props/scroll.html %}
+  <div class="home__pillars">
+    {%- for p in home.pillars %}
+    {%- capture prop %}props/{{ p.kind }}.html{% endcapture %}
+    {% include {{ prop }} p=p %}
+    {%- endfor %}
+  </div>
+  <div class="home__lower">
+    {% include props/board.html %}
+    {% include props/polaroid.html %}
+  </div>
+  {{ content }}
+</div>

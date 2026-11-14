@@ -1,0 +1,2 @@
+{%- comment -%} srcset string for one art key + format. Params: name, fmt (avif | webp). {%- endcomment -%}
+{%- for s in site.data.art[include.name].sizes -%}{{ s[include.fmt] | relative_url }} {{ s.w }}w{%- unless forloop.last -%}, {% endunless -%}{%- endfor -%}
