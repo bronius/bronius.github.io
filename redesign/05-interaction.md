@@ -2,26 +2,39 @@
 
 ## Hanging sign
 
-> **Status (2026-11-14):** the current toy behavior feels "super weird" (Bronius). **Keep it as-is for now**, and rework it later as a **separate effort** (see STATUS.md → Backlog). Don't tune it during the art integration.
+> **Status (2026-11-14):** accepted as built in `reference/preview.html` (D7 revised). The sign is a home link, a click toy, and draggable. The idle sway and spring constants are unchanged. A deeper "feel" rework stays in the backlog.
 
 ### Idle breeze
-A continuous low-amplitude sway of `±1.5°` on a `6s` cycle, so the porch feels alive.
+A continuous low-amplitude sway (`--sway-amp` 1.2°, `--sway-period` 6s) via a **CSS keyframe animation on the outer wrapper** (`.sign`). It costs no JS, runs on the compositor, and is disabled by `prefers-reduced-motion`.
 
-Implementation: a **CSS keyframe animation on an outer wrapper**. It costs no JS, runs on the compositor, and is trivially disabled by `prefers-reduced-motion`.
-
-### Click/tap wobble
-Clicking or tapping injects angular velocity into a **damped spring-pendulum** running on an **inner element**. Physics angle and idle sway compose through nested transforms, so neither has to know about the other.
+### Spring
+The inner element (`.sign__body`, an `<a href="/">`) runs a **damped spring-pendulum**. Physics angle and idle sway compose through nested transforms.
 
 ```
-θ̈ = −k·θ − c·θ̇        k ≈ 18 (rope tension), c ≈ 1.6 (friction)
+θ̈ = −k·θ − c·θ̇        k = 18, c = 1.6, impulse = 34°/s
 ```
-- The system is underdamped (critical damping would be `c = 2√k ≈ 8.5`), so the sign swings several times and the amplitude decays with τ = 2/c ≈ 1.25 s. That's the snappy Tex Avery clatter.
-- Each impulse adds to the current velocity in its direction of travel, so repeated taps pump the swing.
-- Integrate with semi-implicit Euler and clamp `dt ≤ 50 ms` (to survive tab-switch stalls).
-- **The rAF loop only runs while there's energy.** Stop when `|θ| < 0.01°` and `|θ̇| < 0.01°/s`, and restart on the next impulse. This avoids a forever-loop that drains battery.
-- Keyboard: Enter or Space triggers the same impulse.
-- Reduced motion: no idle sway and no wobble (or at most a single ≤ 2° nudge).
-- Semantics: a `<button>` toy on every page, not a home link (D7).
+- Underdamped (critical damping would be `c = 2√k ≈ 8.5`). τ = 2/c ≈ 1.25 s.
+- Integrate with semi-implicit Euler and clamp `dt ≤ 50 ms`. **The rAF loop runs only while there's energy** (stop at `|θ|, |θ̇| < 0.01`).
+
+### Click
+Kick (the impulse adds in the direction of travel), then follow the link. If already on home, `preventDefault()` and just kick. On the real site, navigating from a subpage is a page load, so the kick is cut short. That's fine. (Optional later: cross-document View Transitions.)
+
+### Drag
+- `pointerdown` records the pivot and start angle. The drag starts only after a **6px slop**, so taps stay clicks. Then `setPointerCapture` and add `.is-dragging` (cursor `grabbing`).
+- **Pivot** = top-centre of the sign image: `x = innerWidth/2`, `y = computed top` of `.sign` (negative: the rope is cropped by `--rope-crop`).
+- `θ = clamp(θ₀ + angle(pointer) − angle(start), ±12°)`, where `angle = −atan2(dx, dy)` (CSS `rotate(+)` is clockwise, so the minus sign makes the plank follow the hand).
+- Release velocity = EMA of `Δθ/Δt` (0.6/0.4), clamped to ±160°/s, then hand off to the spring.
+- **A drag swallows the following `click`**, so it never navigates.
+- `touch-action: pan-y` on the sign: horizontal drags swing it, vertical pans still scroll. The browser sends `pointercancel` when it takes over a pan, and that's treated as a release. `draggable="false"`, `-webkit-user-drag: none`, `pointer-events: none` on the `<img>`, and `dragstart` is prevented.
+
+### Keyboard & reduced motion
+- It's a link, so Enter navigates. There's no toy key binding.
+- Reduced motion: no sway, no kick, no drag. Click still navigates.
+
+## Subpage close (D12)
+- `<a class="poster__close" href="/" aria-label="Close, back to home"><span aria-hidden="true">X</span></a>`, absolutely positioned in the poster's top cap (`top: calc(100cqi * -.135); right: 15%`).
+- **Escape** goes home from any subpage.
+- On arrival at a subpage, focus the `<h1 tabindex="-1">` (`preventScroll`). In Jekyll this is a full page load, so only do it when coming from in-site navigation (or skip it, since the browser resets focus anyway).
 
 ## Scroll model
 

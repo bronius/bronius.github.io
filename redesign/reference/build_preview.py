@@ -80,7 +80,7 @@ def build(P: str) -> str:
 
     return TEMPLATE.format(
         plate=plate,
-        sign=picture("sign-plank", P, "(max-width: 767.98px) min(76vw, 330px), clamp(250px, 27vw, 420px)", eager=True),
+        sign=picture("sign-plank", P, "(max-width: 767.98px) min(76vw, 330px), clamp(250px, 27vw, 420px)", eager=True, extra=' draggable="false"'),
         sign_box=box_vars("sign-plank"),
         sign_r=sign_r,
         nav_r=nav_r,
@@ -161,13 +161,17 @@ TEMPLATE = r"""<!DOCTYPE html>
   .sign {{ position: fixed; top: calc(var(--sign-h) * var(--rope-crop) * -1); left: 50%; z-index: 20; width: var(--sign-w);
     translate: -50% 0; transform-origin: 50% 0; animation: sway var(--sway-period) ease-in-out infinite alternate; }}
   @keyframes sway {{ from {{ rotate: calc(-1 * var(--sway-amp)); }} to {{ rotate: var(--sway-amp); }} }}
-  .sign__body {{ display: block; position: relative; width: 100%; transform-origin: 50% 0; cursor: pointer;
-    background: none; border: 0; font: inherit; color: inherit; -webkit-tap-highlight-color: transparent;
+  .sign__body {{ display: block; position: relative; width: 100%; transform-origin: 50% 0; cursor: grab;
+    color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent;
+    user-select: none; -webkit-user-select: none; -webkit-user-drag: none; -webkit-touch-callout: none;
+    touch-action: pan-y; /* horizontal drags swing the sign; vertical pans still scroll the page */
     filter: drop-shadow(0 10px 10px rgb(43 29 18 / .35)); }}
   .sign__name {{ position: absolute; left: var(--bx); top: var(--by); width: var(--bw); height: var(--bh);
     display: grid; place-items: center; padding-bottom: 2%;
     font-family: var(--font-display); font-size: calc(var(--sign-w) * .16); line-height: 1; color: var(--ink);
     text-shadow: 0 1px 0 rgb(255 240 210 / .45); }}
+  .sign__body.is-dragging {{ cursor: grabbing; }}
+  .sign__body img {{ pointer-events: none; }}
   .sign__body:focus-visible {{ outline: none; }}
   .sign__body:focus-visible .sign__name {{ outline: 3px solid var(--parchment); outline-offset: -12%; border-radius: 8px; }}
 
@@ -239,6 +243,15 @@ TEMPLATE = r"""<!DOCTYPE html>
     border-width: calc(100cqi * {cap_top}) 0 calc(100cqi * {cap_bot}) 0;
     border-image: {poster_src} {poster_slice} fill / 1 / 0 stretch;
     padding: 0 9%; }}
+  /* Close (returns home). A Rye "X" inked on the parchment, left of the right-hand nail. */
+  .poster {{ position: relative; }}
+  .poster__close {{ position: absolute; z-index: 1; top: calc(100cqi * -.135); right: 15%;
+    display: grid; place-items: center; width: 1.5em; height: 1.5em; border-radius: 50%;
+    font-family: var(--font-display); font-size: clamp(1.5rem, 5.5cqi, 2.1rem); line-height: 1; color: var(--ink);
+    text-decoration: none; text-shadow: 0 1px 0 rgb(255 240 210 / .5); transition: rotate .2s, scale .2s, background-color .2s; }}
+  .poster__close span {{ translate: 0 .06em; }}
+  .poster__close:hover, .poster__close:focus-visible {{ rotate: -12deg; scale: 1.15; background-color: rgb(43 29 18 / .1); }}
+  .poster__close:focus-visible {{ outline: 2px dashed var(--ink); outline-offset: 2px; }}
   .poster__header {{ margin-top: calc(100cqi * -.075); font-family: var(--font-display); font-weight: normal; text-align: center;
     letter-spacing: .05em; font-size: clamp(2.2rem, 9cqi, 3.6rem); line-height: 1.05; }}
   .poster__subhead {{ font-family: var(--font-display); text-align: center; font-size: clamp(1rem, 4cqi, 1.3rem);
@@ -284,7 +297,7 @@ TEMPLATE = r"""<!DOCTYPE html>
 
   @media (prefers-reduced-motion: reduce) {{
     .sign {{ animation: none; }}
-    .prop, .offsite__tag {{ transition: none; }}
+    .prop, .offsite__tag, .poster__close {{ transition: none; }}
   }}
 }}
 </style>
@@ -294,9 +307,9 @@ TEMPLATE = r"""<!DOCTYPE html>
 
   <header>
     <div class="sign">
-      <button class="sign__body" type="button" aria-label="Bronius (give the sign a push)" style="{sign_box}">
-        {sign}<span class="sign__name">Bronius</span>
-      </button>
+      <a class="sign__body" href="#home" draggable="false" style="{sign_box}">
+        {sign}<span class="sign__name">Bronius<span class="sr-only">, home</span></span>
+      </a>
     </div>
     <nav class="cloud-nav" aria-label="Main">
       <a href="#about">About</a>
@@ -340,7 +353,8 @@ TEMPLATE = r"""<!DOCTYPE html>
     <div class="sub" data-view="sub" hidden>
       <div class="frame">
         <article class="poster" aria-labelledby="poster-h">
-          <h1 class="poster__header" id="poster-h"></h1>
+          <a class="poster__close" href="#home" aria-label="Close, back to home"><span aria-hidden="true">X</span></a>
+          <h1 class="poster__header" id="poster-h" tabindex="-1"></h1>
           <p class="poster__subhead"></p>
           <picture class="poster__art"></picture>
           <div class="poster__body"></div>
@@ -366,6 +380,7 @@ TEMPLATE = r"""<!DOCTYPE html>
   const home = document.querySelector('[data-view="home"]');
   const sub  = document.querySelector('[data-view="sub"]');
 
+  let fromNav = false;
   function route() {{
     const key = location.hash.slice(1);
     const page = pages[key];
@@ -379,35 +394,87 @@ TEMPLATE = r"""<!DOCTYPE html>
         `<source type="image/avif" srcset="${{a.avif}}"><img src="${{a.webp}}" width="${{a.w}}" height="${{a.h}}" alt="${{page.alt}}" decoding="async">`;
       sub.querySelector('.poster__body').innerHTML = page.body;
     }}
+    if (page && fromNav) sub.querySelector('.poster__header').focus({{ preventScroll: true }});
     document.querySelectorAll('.cloud-nav a').forEach(a =>
       a.getAttribute('href') === '#' + key ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
     document.title = (page ? page.sub.replace('&amp;', '&') + ' · ' : '') + 'Bronius.com — Redesign Preview';
     scrollTo(0, 0);
   }}
-  addEventListener('hashchange', route);
+  addEventListener('hashchange', () => {{ fromNav = true; route(); }});
   route();
+  const isHome = () => !home.hidden;
+  // Escape closes a subpage (it's styled like a modal, so it should behave like one).
+  addEventListener('keydown', e => {{ if (e.key === 'Escape' && !isHome()) location.hash = 'home'; }});
 
-  // ---- Sign: damped spring-pendulum θ'' = -kθ - cθ', sleeps at rest (rework is in the backlog) ----
+  // ---- Sign: damped spring-pendulum θ'' = -kθ - cθ' (05-interaction). Link home + drag toy. ----
+  // Click/tap: kick the swing, then go home (on home itself: kick only).
+  // Drag: swing it about the rope pivot, clamped to ±MAX; release flings into the spring.
+  const signWrap = document.querySelector('.sign');
   const sign = document.querySelector('.sign__body');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)');
   const K = 18, C = 1.6, IMPULSE = 34, EPS = 0.01;
-  let theta = 0, omega = 0, last = 0, running = false;
+  const MAX = 12, MAX_OMEGA = 160, DRAG_SLOP = 6;   // deg, deg/s, px
+  let theta = 0, omega = 0, last = 0, running = false, drag = null, swallowClick = false;
+  const clamp = (v, m) => Math.max(-m, Math.min(m, v));
+  const paint = () => {{ sign.style.transform = theta ? `rotate(${{theta.toFixed(3)}}deg)` : ''; }};
 
   function step(now) {{
+    if (drag?.moved) {{ running = false; return; }}          // the hand owns the sign
     const dt = Math.min((now - last) / 1000, 0.05);
     last = now;
     omega += (-K * theta - C * omega) * dt;
     theta += omega * dt;
-    sign.style.transform = `rotate(${{theta.toFixed(3)}}deg)`;
-    if (Math.abs(theta) < EPS && Math.abs(omega) < EPS) {{ theta = omega = 0; sign.style.transform = ''; running = false; return; }}
+    paint();
+    if (Math.abs(theta) < EPS && Math.abs(omega) < EPS) {{ theta = omega = 0; paint(); running = false; return; }}
     requestAnimationFrame(step);
   }}
-  function kick() {{
-    if (reduce.matches) return;
-    omega += IMPULSE * (omega >= 0 ? 1 : -1);
-    if (!running) {{ running = true; last = performance.now(); requestAnimationFrame(step); }}
+  function wake() {{ if (!running) {{ running = true; last = performance.now(); requestAnimationFrame(step); }} }}
+  function kick() {{ if (reduce.matches) return; omega += IMPULSE * (omega >= 0 ? 1 : -1); wake(); }}
+
+  // Pivot = top-centre of the sign image (partly off-screen: the rope is cropped by --rope-crop).
+  function pivot() {{ return {{ x: innerWidth / 2, y: parseFloat(getComputedStyle(signWrap).top) }}; }}
+  // Angle of the pointer about the pivot; CSS rotate(+) is clockwise (moves the plank LEFT), hence the minus.
+  const angleAt = (e, p) => -Math.atan2(e.clientX - p.x, e.clientY - p.y) * 180 / Math.PI;
+
+  sign.addEventListener('pointerdown', e => {{
+    swallowClick = false;
+    if (reduce.matches || e.button !== 0) return;
+    const p = pivot();
+    drag = {{ id: e.pointerId, p, a0: angleAt(e, p), t0: theta, x: e.clientX, y: e.clientY, moved: false, t: performance.now() }};
+  }});
+  sign.addEventListener('pointermove', e => {{
+    if (!drag || e.pointerId !== drag.id) return;
+    if (!drag.moved) {{
+      if (Math.hypot(e.clientX - drag.x, e.clientY - drag.y) < DRAG_SLOP) return;
+      drag.moved = true; omega = 0;
+      sign.setPointerCapture(e.pointerId);
+      sign.classList.add('is-dragging');
+    }}
+    const now = performance.now(), prev = theta;
+    theta = clamp(drag.t0 + angleAt(e, drag.p) - drag.a0, MAX);
+    const dt = (now - drag.t) / 1000;
+    if (dt > 0) omega = 0.6 * omega + 0.4 * ((theta - prev) / dt);  // smoothed release velocity
+    drag.t = now;
+    paint();
+  }});
+  function release(e) {{
+    if (!drag || e.pointerId !== drag.id) return;
+    if (drag.moved) {{
+      swallowClick = true;                                   // a drag is not a click
+      omega = clamp(omega, MAX_OMEGA);
+      sign.classList.remove('is-dragging');
+      drag = null; wake();
+    }} else drag = null;
   }}
-  sign.addEventListener('click', kick);   // toy, not a link (D7)
+  sign.addEventListener('pointerup', release);
+  sign.addEventListener('pointercancel', release);           // e.g. the browser took over for a vertical pan
+  sign.addEventListener('dragstart', e => e.preventDefault());
+
+  sign.addEventListener('click', e => {{
+    if (swallowClick) {{ e.preventDefault(); swallowClick = false; return; }}
+    kick();
+    if (isHome()) e.preventDefault();                        // already home: just a wobble
+  }});
 </script>
 </body>
 </html>
