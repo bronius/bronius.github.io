@@ -1,0 +1,427 @@
+#!/usr/bin/env python3
+"""Generate redesign/reference/preview.html from _data/art.yml (real art, live text).
+
+    python3 redesign/reference/build_preview.py [--prefix ../../assets/img/art/] [--out PATH]
+
+`picture()` mirrors what the theme's `_includes/picture.html` will do in Liquid:
+AVIF + WebP srcsets, intrinsic width/height (CLS 0), lazy unless told otherwise.
+Geometry (content boxes, slice insets, aspect ratios) comes from art.yml, never hand-typed.
+"""
+from __future__ import annotations
+
+import argparse
+from pathlib import Path
+
+import yaml
+
+ROOT = Path(__file__).resolve().parents[2]
+ART = yaml.safe_load((ROOT / "_data" / "art.yml").read_text())
+
+
+def fname(url: str) -> str:
+    return url.rsplit("/", 1)[-1]
+
+
+def srcset(name: str, fmt: str, P: str) -> str:
+    return ", ".join(f"{P}{fname(s[fmt])} {s['w']}w" for s in ART[name]["sizes"])
+
+
+def picture(name: str, P: str, sizes: str, cls: str = "", alt: str = "", eager: bool = False, extra: str = "") -> str:
+    a = ART[name]
+    small = a["sizes"][0]
+    load = 'fetchpriority="high" decoding="async"' if eager else 'loading="lazy" decoding="async"'
+    return (
+        f'<picture class="{cls}">'
+        f'<source type="image/avif" srcset="{srcset(name, "avif", P)}" sizes="{sizes}">'
+        f'<img src="{P}{fname(small["webp"])}" srcset="{srcset(name, "webp", P)}" sizes="{sizes}" '
+        f'width="{a["width"]}" height="{a["height"]}" alt="{alt}" {load}{extra}></picture>'
+    )
+
+
+def best(name: str, fmt: str, P: str) -> str:
+    return P + fname(ART[name]["sizes"][-1][fmt])
+
+
+def image_set(name: str, P: str) -> str:
+    return f'image-set(url("{best(name, "avif", P)}") type("image/avif"), url("{best(name, "webp", P)}") type("image/webp"))'
+
+
+def box_vars(name: str) -> str:
+    b = ART[name]["box"]
+    return f"--bx:{b['x']}%;--by:{b['y']}%;--bw:{b['w']}%;--bh:{b['h']}%;"
+
+
+def ratio(name: str) -> float:
+    return ART[name]["ratio"]
+
+
+def build(P: str) -> str:
+    frame = ART["board-frame"]["slice"]["pct"]
+    poster = ART["poster-sheet"]
+    pw, ph = poster["width"], poster["height"]
+    # 3-slice cap heights as a fraction of the poster's WIDTH (keeps caps undistorted at any width).
+    cap_top = poster["slice"]["px"]["top"] / pw
+    cap_bot = poster["slice"]["px"]["bottom"] / pw
+    sign_r = ratio("sign-plank")
+    nav_r = ratio("cloud-bank")
+    pol = ART["polaroid"]["box"]
+
+    plate = (
+        '<picture class="scene" aria-hidden="true">'
+        f'<source media="(max-width: 767.98px)" type="image/avif" srcset="{srcset("plate-mobile", "avif", P)}" sizes="100vw">'
+        f'<source media="(max-width: 767.98px)" type="image/webp" srcset="{srcset("plate-mobile", "webp", P)}" sizes="100vw">'
+        f'<source type="image/avif" srcset="{srcset("plate-desktop", "avif", P)}" sizes="100vw">'
+        f'<img src="{P}{fname(ART["plate-desktop"]["sizes"][0]["webp"])}" srcset="{srcset("plate-desktop", "webp", P)}" sizes="100vw" '
+        f'width="{ART["plate-desktop"]["width"]}" height="{ART["plate-desktop"]["height"]}" alt="" fetchpriority="high" decoding="async"></picture>'
+    )
+
+    arts = {k: {s: best(f"art-{k}", s, P) for s in ("avif", "webp")} | {"w": ART[f"art-{k}"]["width"], "h": ART[f"art-{k}"]["height"]}
+            for k in ("about", "music", "professional", "life")}
+
+    return TEMPLATE.format(
+        plate=plate,
+        sign=picture("sign-plank", P, "(max-width: 767.98px) min(76vw, 330px), clamp(250px, 27vw, 420px)", eager=True),
+        sign_box=box_vars("sign-plank"),
+        sign_r=sign_r,
+        nav_r=nav_r,
+        nav_bg=image_set("cloud-bank", P),
+        puff1=image_set("cloud-puffs-1", P), puff2=image_set("cloud-puffs-2", P), puff3=image_set("cloud-puffs-3", P),
+        tag=picture("offsite-tag", P, "40px", cls="offsite__tag", eager=True),
+        scroll_bg=image_set("scroll-banner", P), scroll_r=ratio("scroll-banner"),
+        arrow=picture("trail-arrow", P, "(max-width: 767.98px) 60vw, 240px"), arrow_box=box_vars("trail-arrow"),
+        plank=picture("trail-plank", P, "(max-width: 767.98px) 60vw, 240px"), plank_box=box_vars("trail-plank"),
+        note_bg=image_set("note-pinned", P), note_r=ratio("note-pinned"),
+        board_bg=image_set("board-small", P), board_r=ratio("board-small"),
+        polaroid=picture("polaroid", P, "(max-width: 767.98px) 70vw, 240px"),
+        pol_box=f"--bx:{pol['x']}%;--by:{pol['y']}%;--bw:{pol['w']}%;--bh:{pol['h']}%;",
+        frame_src=image_set("board-frame", P),
+        frame_slice=f"{frame['top']}% {frame['right']}% {frame['bottom']}% {frame['left']}%",
+        poster_src=image_set("poster-sheet", P),
+        poster_slice=f"{poster['slice']['pct']['top']}% 0 {poster['slice']['pct']['bottom']}% 0",
+        cap_top=round(cap_top, 4), cap_bot=round(cap_bot, 4),
+        arts=repr(arts).replace("'", '"'),
+    )
+
+
+# Doubled braces are literal CSS/JS braces (str.format).
+TEMPLATE = r"""<!DOCTYPE html>
+<!--
+  GENERATED by redesign/reference/build_preview.py from _data/art.yml. Edit the generator, not this file.
+  Clickable concept preview: home + subpages via #hash routes, real processed art (D11), live text (D4),
+  document scroll (D9). Stand-in for the Jekyll theme, not production markup.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bronius.com — Redesign Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Rye&display=swap">
+<style>
+@layer reset, tokens, scene, components, views;
+
+@layer reset {{
+  *, *::before, *::after {{ box-sizing: border-box; margin: 0; padding: 0; }}
+  a {{ color: inherit; }}
+  ul {{ list-style: none; }}
+  img {{ display: block; max-width: 100%; height: auto; }}
+  picture {{ display: block; }}
+}}
+
+@layer tokens {{
+  :root {{
+    --ink: #2b1d12;
+    --ink-soft: #4a3423;
+    --parchment: #f3e4c8;
+    --sky: #e9c58f;
+    --font-display: 'Rye', 'Alfa Slab One', 'Rockwell', serif;
+    --font-body: 'Lora', Georgia, serif;
+    --sway-amp: 1.2deg;
+    --sway-period: 6s;
+    /* Sign hangs from the top edge; the top --rope-crop of its height (rope) is off-screen. */
+    --sign-w: clamp(250px, 27vw, 420px);
+    --sign-h: calc(var(--sign-w) / {sign_r});
+    --rope-crop: .24;
+    --nav-w: min(880px, 94vw);
+    --nav-top: calc(var(--sign-h) * (.985 - var(--rope-crop)) - 6px);
+    --chrome-h: calc(var(--nav-top) + var(--nav-w) / {nav_r} + 12px);
+  }}
+}}
+
+@layer scene {{
+  body {{ font-family: var(--font-body); color: var(--ink); background: var(--sky); min-height: 100vh;
+    overflow-x: hidden; line-height: 1.6; }}
+  .scene {{ position: fixed; inset: 0; z-index: 0; pointer-events: none; }}
+  .scene img {{ width: 100%; height: 100%; max-width: none; object-fit: cover; object-position: 50% 50%; }}
+}}
+
+@layer components {{
+  /* ---- Sign (D7): outer = CSS idle sway, inner = JS spring. Live text over the painted plank. ---- */
+  .sign {{ position: fixed; top: calc(var(--sign-h) * var(--rope-crop) * -1); left: 50%; z-index: 20; width: var(--sign-w);
+    translate: -50% 0; transform-origin: 50% 0; animation: sway var(--sway-period) ease-in-out infinite alternate; }}
+  @keyframes sway {{ from {{ rotate: calc(-1 * var(--sway-amp)); }} to {{ rotate: var(--sway-amp); }} }}
+  .sign__body {{ display: block; position: relative; width: 100%; transform-origin: 50% 0; cursor: pointer;
+    background: none; border: 0; font: inherit; color: inherit; -webkit-tap-highlight-color: transparent;
+    filter: drop-shadow(0 10px 10px rgb(43 29 18 / .35)); }}
+  .sign__name {{ position: absolute; left: var(--bx); top: var(--by); width: var(--bw); height: var(--bh);
+    display: grid; place-items: center; padding-bottom: 2%;
+    font-family: var(--font-display); font-size: calc(var(--sign-w) * .16); line-height: 1; color: var(--ink);
+    text-shadow: 0 1px 0 rgb(255 240 210 / .45); }}
+  .sign__body:focus-visible {{ outline: none; }}
+  .sign__body:focus-visible .sign__name {{ outline: 3px solid var(--parchment); outline-offset: -12%; border-radius: 8px; }}
+
+  /* ---- Cloud nav: painted cloud bank (desktop), one puff per link (mobile) ---- */
+  .cloud-nav {{ position: fixed; z-index: 15; top: var(--nav-top); left: 50%; translate: -50% 0; width: var(--nav-w);
+    aspect-ratio: {nav_r}; background: {nav_bg} center / 100% 100% no-repeat;
+    display: flex; flex-wrap: wrap; justify-content: center; align-items: center; align-content: center; gap: 0 1.1em;
+    padding: calc(var(--nav-w) * .005) calc(var(--nav-w) * .11) 0; filter: drop-shadow(0 6px 8px rgb(43 29 18 / .18)); }}
+  .cloud-nav a {{ font-family: var(--font-display); font-size: clamp(.9rem, 1.2vw, 1.1rem); text-decoration: none; white-space: nowrap;
+    padding: .2em .1em; text-underline-offset: 5px; }}
+  .cloud-nav a:hover, .cloud-nav a[aria-current="page"] {{ text-decoration: underline wavy 1.5px; }}
+  /* Off-site cue (D10): painted tag in the nav */
+  .offsite {{ position: relative; display: inline-flex; align-items: center; gap: .25em; }}
+  .offsite__tag {{ width: 1.9em; rotate: -8deg; translate: 0 -.15em; transition: translate .25s; }}
+  .offsite:hover .offsite__tag, .offsite:focus-visible .offsite__tag {{ translate: .35em -.15em; }}
+  .sr-only {{ position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }}
+
+  /* ---- Intro scroll ---- */
+  /* Painted panels: % padding would resolve against the containing block, so pads derive from --w. */
+  .scroll {{ --w: min(480px, 100%); width: var(--w); aspect-ratio: {scroll_r}; background: {scroll_bg} center / 100% 100% no-repeat;
+    display: grid; place-items: center; padding: calc(var(--w) * .03) calc(var(--w) * .17) calc(var(--w) * .04); text-align: center; font-style: italic;
+    font-size: clamp(.9rem, 1.25vw, 1.05rem); line-height: 1.4; filter: drop-shadow(0 8px 10px rgb(43 29 18 / .25)); }}
+
+  /* ---- Props with a measured content box (--bx/--by/--bw/--bh from art.yml) ---- */
+  .prop {{ position: relative; display: block; text-decoration: none; transition: rotate .2s;
+    filter: drop-shadow(0 8px 8px rgb(43 29 18 / .28)); }}
+  .prop:hover, .prop:focus-visible {{ rotate: 0deg !important; }}
+  .prop:focus-visible {{ outline: none; }}
+  .prop:focus-visible .prop__label {{ outline: 3px solid var(--parchment); outline-offset: 2px; border-radius: 6px; }}
+  .prop__label {{ position: absolute; left: var(--bx); top: var(--by); width: var(--bw); height: var(--bh);
+    display: grid; place-items: center; font-family: var(--font-display); line-height: 1; color: var(--ink);
+    text-shadow: 0 1px 0 rgb(255 240 210 / .4); }}
+  .prop--arrow {{ width: clamp(190px, 19vw, 240px); }}
+  .prop--arrow .prop__label {{ padding-right: 22%; font-size: clamp(1.4rem, 2.3vw, 1.9rem); }}
+  .prop--plank {{ width: clamp(190px, 19vw, 240px); }}
+  .prop--plank .prop__label {{ font-size: clamp(1.15rem, 1.9vw, 1.55rem); padding: 0 6%; }}
+  .note {{ --w: clamp(190px, 18vw, 230px); width: var(--w); aspect-ratio: {note_r}; background: {note_bg} center / 100% 100% no-repeat;
+    padding: calc(var(--w) * .2) calc(var(--w) * .14) calc(var(--w) * .16); text-align: center; display: grid; align-content: center; gap: .4em; }}
+  .note h2 {{ font-family: var(--font-display); font-weight: normal; font-size: clamp(1.4rem, 2.2vw, 1.75rem); line-height: 1.05; }}
+  .note p {{ font-size: .82rem; line-height: 1.35; color: var(--ink-soft); }}
+
+  /* ---- Small board: Recent Posts ---- */
+  .board-small {{ --w: clamp(280px, 26vw, 340px); width: var(--w); aspect-ratio: {board_r}; background: {board_bg} center / 100% 100% no-repeat;
+    padding: calc(var(--w) * .08) calc(var(--w) * .16) calc(var(--w) * .07); color: var(--parchment); filter: drop-shadow(0 8px 10px rgb(43 29 18 / .3));
+    text-shadow: 0 1px 2px rgb(0 0 0 / .7); }}
+  .board-small h2 {{ font-family: var(--font-display); font-weight: normal; text-align: center; font-size: 1.3rem; margin-bottom: .2em; }}
+  .board-small li + li {{ border-top: 1px dashed rgb(243 228 200 / .35); }}
+  .board-small a {{ display: block; padding: .3em 0; text-decoration: none; line-height: 1.25; }}
+  .board-small a:hover {{ text-decoration: underline; }}
+  .board-small time {{ display: block; font-size: .72rem; opacity: .8; }}
+
+  /* ---- Polaroid: window is transparent; the photo sits behind it ---- */
+  .polaroid {{ position: relative; width: clamp(200px, 18vw, 240px); filter: drop-shadow(0 8px 10px rgb(43 29 18 / .3)); }}
+  .polaroid__photo {{ position: absolute; left: var(--bx); top: var(--by); width: var(--bw); height: var(--bh);
+    background: radial-gradient(circle at 30% 35%, #f1d9a6 0 12%, transparent 13%),
+                linear-gradient(180deg, #e8b878 0 55%, #a7703f 55% 100%);
+    display: grid; place-items: end center; padding-bottom: 8%; font-size: .7rem; color: rgb(43 29 18 / .7); text-align: center; }}
+  .polaroid picture {{ position: relative; }}
+  .polaroid figcaption {{ position: absolute; left: 12%; right: 10%; bottom: 7%; text-align: center; rotate: 4deg;
+    font-family: var(--font-display); font-size: .9rem; }}
+
+  /* ---- Subpage: 9-slice board frame + 3-slice poster ---- */
+  .frame {{ container-type: inline-size; border: 42px solid transparent;
+    border-image: {frame_src} {frame_slice} / 42px / 0 stretch;
+    background: linear-gradient(90deg, rgb(0 0 0 / .25) 0 2px, transparent 2px) 0 0 / 64px 100%,
+                linear-gradient(180deg, #4b3021, #3a2418) padding-box;
+    padding: 8px 10px 14px; filter: drop-shadow(0 14px 18px rgb(43 29 18 / .45)); }}
+  .poster {{ border-style: solid; border-color: transparent;
+    border-width: calc(100cqi * {cap_top}) 0 calc(100cqi * {cap_bot}) 0;
+    border-image: {poster_src} {poster_slice} fill / 1 / 0 stretch;
+    padding: 0 9%; }}
+  .poster__header {{ margin-top: calc(100cqi * -.075); font-family: var(--font-display); font-weight: normal; text-align: center;
+    letter-spacing: .05em; font-size: clamp(2.2rem, 9cqi, 3.6rem); line-height: 1.05; }}
+  .poster__subhead {{ font-family: var(--font-display); text-align: center; font-size: clamp(1rem, 4cqi, 1.3rem);
+    margin: .2em 0 .9em; padding-bottom: .4em; border-bottom: 3px double var(--ink); }}
+  .poster__art {{ width: min(78%, 400px); margin: 0 auto 1.3em; }}
+  .poster__art img {{ width: 100%; box-shadow: 0 2px 0 rgb(43 29 18 / .25); }}
+  .poster__body p + p {{ margin-top: .9em; }}
+  .poster__body .lede {{ font-weight: 600; }}
+}}
+
+@layer views {{
+  main {{ position: relative; z-index: 5; padding: calc(var(--chrome-h) + 1rem) clamp(24px, 6vw, 90px) 14vh; }}
+  [data-view][hidden] {{ display: none; }}
+
+  .home {{ display: grid; justify-items: center; gap: clamp(1.5rem, 3vw, 2.5rem); max-width: 1000px; margin-inline: auto; }}
+  .home__pillars, .home__lower {{ display: flex; justify-content: center; align-items: flex-end; flex-wrap: wrap;
+    gap: clamp(1.2rem, 4vw, 3.5rem); }}
+  .home__lower {{ align-items: flex-start; }}
+  .home__lower .board-small {{ rotate: -1.5deg; }}
+
+  .sub {{ display: flex; justify-content: flex-end; }}
+  .sub .frame {{ width: min(640px, 52vw); margin-right: 3vw; }}
+
+  @media (max-width: 767.98px) {{
+    :root {{ --sign-w: min(76vw, 330px); --nav-w: 96vw; --chrome-h: calc(var(--nav-top) + 118px); }}
+    .cloud-nav {{ aspect-ratio: auto; background: none; padding: 0; gap: 2px 0; filter: drop-shadow(0 4px 5px rgb(43 29 18 / .18)); }}
+    .cloud-nav a {{ font-size: .95rem; padding: 1.15em 1.6em .8em; background: {puff2} center / 100% 100% no-repeat; }}
+    .cloud-nav a:nth-child(3n+1) {{ background-image: {puff1}; }}
+    .cloud-nav a:nth-child(3n) {{ background-image: {puff3}; }}
+    main {{ padding-inline: 16px; }}
+    .scroll {{ --w: 100%; font-size: .9rem; }}
+    .home__pillars, .home__lower {{ flex-direction: column; align-items: center; }}
+    .prop, .home__lower > * {{ rotate: 0deg !important; }}
+    .prop--arrow, .prop--plank {{ width: min(50vw, 220px); }}
+    .note {{ --w: min(58vw, 240px); }}
+    .board-small {{ --w: min(88vw, 340px); }}
+    .polaroid {{ width: min(66vw, 240px); }}
+    /* Board frame disappears; parchment runs edge to edge. */
+    .sub {{ display: block; margin-inline: -16px; }}
+    .sub .frame {{ width: 100%; margin: 0; border: 0; border-image: none; background: none; padding: 0; filter: none; }}
+    .poster {{ padding-inline: 8%; }}
+  }}
+
+  @media (prefers-reduced-motion: reduce) {{
+    .sign {{ animation: none; }}
+    .prop, .offsite__tag {{ transition: none; }}
+  }}
+}}
+</style>
+</head>
+<body>
+  {plate}
+
+  <header>
+    <div class="sign">
+      <button class="sign__body" type="button" aria-label="Bronius (give the sign a push)" style="{sign_box}">
+        {sign}<span class="sign__name">Bronius</span>
+      </button>
+    </div>
+    <nav class="cloud-nav" aria-label="Main">
+      <a href="#about">About</a>
+      <a href="#music">Music</a>
+      <a href="#professional">Professional</a>
+      <a href="#life">Life &amp; Faith</a>
+      <a class="offsite" href="https://violinstudio.bronius.com/">Violin Studio{tag}<span class="sr-only">(external site)</span></a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- HOME -->
+    <div class="home" data-view="home">
+      <p class="scroll">I try to live a life where faith, family, music, work, and community fit together.</p>
+
+      <div class="home__pillars">
+        <a class="prop prop--arrow" href="#music" style="rotate:-2deg;{arrow_box}">{arrow}<span class="prop__label">Music</span></a>
+        <a class="prop prop--plank" href="#professional" style="rotate:1deg;{plank_box}">{plank}<span class="prop__label">Professional</span></a>
+        <a class="prop" href="#life" style="rotate:2deg">
+          <section class="note"><h2>Life &amp; Faith</h2><p>Family, faith, and the community that holds it together.</p></section>
+        </a>
+      </div>
+
+      <div class="home__lower">
+        <section class="board-small" aria-labelledby="posts-h">
+          <h2 id="posts-h">Recent Posts</h2>
+          <ul>
+            <li><a href="#home"><time datetime="2026-09-16">Sep 16, 2026</time>Projects</a></li>
+            <li><a href="#home"><time datetime="2024-03-22">Mar 22, 2024</time>Welcome</a></li>
+          </ul>
+        </section>
+        <figure class="polaroid" style="{pol_box}">
+          <div class="polaroid__photo">Flickr photo here</div>
+          {polaroid}
+          <figcaption>Random Flickr Photo</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <!-- SUBPAGE (content swapped per route) -->
+    <div class="sub" data-view="sub" hidden>
+      <div class="frame">
+        <article class="poster" aria-labelledby="poster-h">
+          <h1 class="poster__header" id="poster-h"></h1>
+          <p class="poster__subhead"></p>
+          <picture class="poster__art"></picture>
+          <div class="poster__body"></div>
+        </article>
+      </div>
+    </div>
+  </main>
+
+<script type="module">
+  // ---- Content per route (stand-in for page front matter + markdown) ----
+  const ART = {arts};
+  const pages = {{
+    about: {{ header: 'WANTED', sub: 'BRONIUS MOTEKAITIS', art: 'about', alt: 'A violin resting beside a glowing oil lantern', body: `
+      <p class="lede">A man of God, a family man, a musician, an artist, an IT professional, and an aspiring product manager.</p>
+      <p>Growing up in College Station, Texas, I have always wanted to know how the people around me experience the world: what is hard, what opens doors, what builds confidence, and what makes ordinary life better.</p>
+      <p><em>(Preview: the rest of about.markdown renders here. The parchment's middle stretches to any length of copy; the torn top and curled bottom stay fixed.)</em></p>
+      <p><em>Extra paragraph to show the 3-slice stretching. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</em></p>` }},
+    music:        {{ header: 'NOW PLAYING', sub: 'MUSIC', art: 'music', alt: 'A fiddle and bow across an open book of sheet music', body: '<p><em>Placeholder: music.markdown content renders here.</em></p>' }},
+    professional: {{ header: 'HELP WANTED', sub: 'PROFESSIONAL', art: 'professional', alt: 'An antique telegraph key beside an open ledger', body: '<p><em>Placeholder: professional.markdown content renders here.</em></p>' }},
+    life:         {{ header: 'NOTICE', sub: 'LIFE &amp; FAITH', art: 'life', alt: 'A prairie chapel on a hill at golden hour', body: '<p><em>Placeholder: life.markdown content renders here.</em></p>' }},
+  }};
+
+  const home = document.querySelector('[data-view="home"]');
+  const sub  = document.querySelector('[data-view="sub"]');
+
+  function route() {{
+    const key = location.hash.slice(1);
+    const page = pages[key];
+    home.hidden = !!page;
+    sub.hidden = !page;
+    if (page) {{
+      const a = ART[page.art];
+      sub.querySelector('.poster__header').textContent = page.header;
+      sub.querySelector('.poster__subhead').innerHTML = page.sub;
+      sub.querySelector('.poster__art').innerHTML =
+        `<source type="image/avif" srcset="${{a.avif}}"><img src="${{a.webp}}" width="${{a.w}}" height="${{a.h}}" alt="${{page.alt}}" decoding="async">`;
+      sub.querySelector('.poster__body').innerHTML = page.body;
+    }}
+    document.querySelectorAll('.cloud-nav a').forEach(a =>
+      a.getAttribute('href') === '#' + key ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
+    document.title = (page ? page.sub.replace('&amp;', '&') + ' · ' : '') + 'Bronius.com — Redesign Preview';
+    scrollTo(0, 0);
+  }}
+  addEventListener('hashchange', route);
+  route();
+
+  // ---- Sign: damped spring-pendulum θ'' = -kθ - cθ', sleeps at rest (rework is in the backlog) ----
+  const sign = document.querySelector('.sign__body');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const K = 18, C = 1.6, IMPULSE = 34, EPS = 0.01;
+  let theta = 0, omega = 0, last = 0, running = false;
+
+  function step(now) {{
+    const dt = Math.min((now - last) / 1000, 0.05);
+    last = now;
+    omega += (-K * theta - C * omega) * dt;
+    theta += omega * dt;
+    sign.style.transform = `rotate(${{theta.toFixed(3)}}deg)`;
+    if (Math.abs(theta) < EPS && Math.abs(omega) < EPS) {{ theta = omega = 0; sign.style.transform = ''; running = false; return; }}
+    requestAnimationFrame(step);
+  }}
+  function kick() {{
+    if (reduce.matches) return;
+    omega += IMPULSE * (omega >= 0 ? 1 : -1);
+    if (!running) {{ running = true; last = performance.now(); requestAnimationFrame(step); }}
+  }}
+  sign.addEventListener('click', kick);   // toy, not a link (D7)
+</script>
+</body>
+</html>
+"""
+
+
+def main() -> None:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--prefix", default="../../assets/img/art/", help="URL prefix for art files")
+    ap.add_argument("--out", default=str(Path(__file__).with_name("preview.html")))
+    args = ap.parse_args()
+    Path(args.out).write_text(build(args.prefix))
+    print(f"wrote {args.out}")
+
+
+if __name__ == "__main__":
+    main()

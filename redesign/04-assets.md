@@ -16,7 +16,7 @@ Split the artwork into layers instead of using one giant background image. Every
 | Off-site cue | AVIF/WebP with alpha | `offsite-tag`, a small painted tag beside off-site nav links (D10). Body links use a CSS `::after` glyph. |
 | All text | Live HTML + web fonts | **Never baked into images** (D4). Poster headers, sign name, nav and copy are all HTML. |
 
-Source PNGs from Nano Banana go to `redesign/art-src/` (excluded from the build). Claude keys out the green, trims, slices and encodes them into `assets/img/`.
+Masters live in `redesign/art-src/` (excluded from the build). **`_tools/art/build.py`** keys, cleans, trims, splits, measures and encodes them into `assets/img/art/`, and writes `_data/art.yml` (dims, srcset URLs, content `box`, `slice` insets). Templates read geometry from `site.data.art`; never hand-type it.
 
 ## Budgets
 | Asset | Target |
@@ -31,4 +31,4 @@ Source PNGs from Nano Banana go to `redesign/art-src/` (excluded from the build)
 ## Production notes
 - The current mockups have text, nav and props baked in, so they **can't be used as art**. 07-art-production.md has prompts for every clean layer.
 - Keep masters (PNG/PSD at 4K) out of the deployed site, either in `redesign/art-src/` (which is excluded from the build) or outside the repo.
-- Encode with `avifenc`/`cwebp` or Squoosh, and commit only the outputs to `assets/img/`.
+- Encoding is Pillow AVIF (q50 alpha / q55 opaque, speed 6, 1 thread, so output is byte-stable) plus WebP. The poster uses q42 (smooth parchment). The pipeline output is committed.
