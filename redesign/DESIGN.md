@@ -8,6 +8,7 @@ This file is the **entry point**. Each spec below covers one topic and stands al
 
 | File | Scope | Read when… |
 |---|---|---|
+| [STATUS.md](STATUS.md) | **Start here.** Current phase, next steps, backlog, conventions | Every new session |
 | [01-concept.md](01-concept.md) | Art direction, scene composition, style rules | Making or judging artwork |
 | [02-layout.md](02-layout.md) | Home and subpage layouts, breakpoints, content mapping | Building templates and CSS layout |
 | [03-tokens.md](03-tokens.md) | Color, type, spacing and motion tokens | Writing any CSS |

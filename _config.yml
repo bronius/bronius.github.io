@@ -73,6 +73,7 @@ social:
 #
 exclude:
   - redesign/
+  - CLAUDE.md
 
 # exclude:
 #   - .sass-cache/

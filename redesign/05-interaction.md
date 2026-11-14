@@ -2,6 +2,8 @@
 
 ## Hanging sign
 
+> **Status (2026-11-14):** the current toy behavior feels "super weird" (Bronius). **Keep it as-is for now**, and rework it later as a **separate effort** (see STATUS.md → Backlog). Don't tune it during the art integration.
+
 ### Idle breeze
 A continuous low-amplitude sway of `±1.5°` on a `6s` cycle, so the porch feels alive.
 
