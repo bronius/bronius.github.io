@@ -1,30 +1,31 @@
 ---
 layout: post
 title: "If the FAA Grounds You, Let Your Dreams Take Flight!"
-date: 2026-11-15 10:20:57 -0500
+date: 2026-11-15 10:20:57 -0600
 categories:
 description: "Stuck at Austin-Bergstrom during the November 13, 2026 FAA nationwide ground stop, I finally built the Old West cartoon website I'd sketched 15 years ago, with Claude Code, Gemini Nano Banana and Jekyll on GitHub Pages."
 image: /assets/images/bronius-com-old-west-redesign.jpg
 ---
 
-**New!** From the project lab of Bronius Motekaitis, I present <em>Texas-style web design!</em>:
+**New!** From the project lab of Bronius Motekaitis: <em>Texas-style web design!</em>
 
 <div class="media-placeholder">
   <img src="{{ "/assets/images/bronius-com-old-west-redesign.jpg" | relative_url }}"
        width="1200" height="750"
        alt="The redesigned bronius.com home page: a hand-painted Old West main street seen from a wooden porch, with a hanging Bronius sign, cloud navigation and wooden signposts">
 </div>
-Just launched: <a href="https://bronius.com">https://bronius.com</a>. My personal website on vanity domain that I've had since 2000 but got around to refreshing while waiting for a flight delay.
 
-I had this design concept for many years but never the time nor particular motivation to go beyond drawing board until now. Funny -- everything of my concept centers around the hanging "Bronius" sign swaying in the breeze, but its physics are far from what I wanted 🤷
+Just launched: the all-new <a href="https://bronius.com">bronius.com</a>, a vanity domain I've owned since 2000, rebuilt in an afternoon the FAA handed me for free.
 
-### Background
+The concept has been in my head for years: a 1940s cartoon Old West main street, seen from the porch, with a hanging "Bronius" sign swaying in the breeze. Go ahead and grab the sign and give it a shove. It swings.
 
-When I graduated with a Bachelor of Computer Science from Sam Houston State University in 2000, I treated myself to the bronius.com vanity domain. I had a simple shockwave flash animation to impress my friends followed by basic resume/CV info. Over time, I switched it to a Drupal site for blogging and sharing devops and other niche challenges overcome (bc that's what we do in open source: one part back scratch, two parts vanity). Eventually it all went by the wayside, bc real life took over. Somewhere along the way I had this Tex Avery western cartoon (see Droopy) style backdrop with a handing sign.
+## Background
 
-I did not know then that it was ADHD driving these zany ideas that sounded like gold to me but would wouldn't amount to a hill of beans and misprioritization to others. I just thought it was spunky youth, undiscovered talent, and the rest of the world can go stub their toe for not seeing it.
+When I graduated with a Bachelor of Computer Science from Sam Houston State University in 2000, I treated myself to the bronius.com vanity domain. It started as a Shockwave Flash animation to impress my friends, followed by basic résumé info. Later it became a Drupal site for blogging about DevOps and other niche problems I'd solved (because that's what we do in open source: one part back scratch, two parts vanity). Eventually it went by the wayside, because real life took over. Somewhere along the way I sketched a Tex Avery–style western cartoon backdrop (think Droopy) with a hanging sign.
 
-### Grounded at AUS on Friday the 13th
+My brain has always been an idea factory, turning out zany concepts that shine like gold to me long before anyone else can see them. These days I know how that engine runs, and I've built the habits to point it at a finish line: write it down, break it into chunks, ship it. This site is one of those ideas, finally run all the way through.
+
+## Grounded at AUS on Friday the 13th
 
 Fast forward to Friday, November 13, 2026. Part of my family was waiting at Austin-Bergstrom International Airport (AUS) when the departure board started turning red. At 3:54 p.m. Eastern, the FAA issued a [nationwide ground stop](https://www.cbsnews.com/news/faa-issues-nationwide-ground-stop/): every departing flight in the United States held at the gate after a communications failure hit the Air Route Traffic Control Centers that run the country's en-route airspace. It was only the second nationwide ground stop since 9/11 (the last was the January 2023 NOTAM outage). The stop lasted a bit over four hours, FlightAware counted more than 9,000 cancellations by the end of the day, and ours was one of them.
 
@@ -32,24 +33,22 @@ All around us, phones were out, rebooking lines were forming, and everyone was r
 
 ## Process
 
-I started with a generic scene description to get the mood, palette, and style established in Gemini/Nano Banana, right from Google in the browser on my phone! once satisfied, I gave AI Mode one more task: Describe this scene, mood, etc for generative AI to be able to produce the same image as a website in desktop and mobile.
+I started in Gemini on my phone, describing a scene to Nano Banana until the mood, palette and style were right. Once I was happy with it, I gave AI Mode one more task: describe this scene so a generative AI could reproduce it as a website on desktop and mobile.
 
-I was too loose in my prompt, and Gemini happily gave me way more than an image and starting prompt: it also gave some seed html and css!
+My prompt was loose, and Gemini happily overdelivered. Along with the image and a starting prompt, it threw in seed HTML and CSS.
 
-I fed all that into Claude Code, asking it to chop it up and use the existing bronius.com content to seed it. Before generating anything at all, I also channeled it to make a set of working documents so we could pick up between focused working sessions to preserve context and conserve tokens.
+I fed all of that to Claude Code and asked it to cut it up and fill it with the existing bronius.com content. Before generating anything, I had it write a set of design docs (concept, layout, design tokens, assets, interaction, architecture, art production) plus a single status file for handoffs, so each focused session could pick up where the last one left off without re-burning context or tokens.
 
-With design planning docs in place, we set out to build the static html prototype: while I was already wired into my existing GitHub Pages repo (for this site), we were working in a non-main working branch, bc main is a Jekyll site that automatically publishes on merge. Working in my GitHub repo was important, however, bc a lot of edits coming up were cheaper to do by hand (not promoting), and image generation could not be done in Claude (I did try, and vector looked like....like Corel Graphics had taken over PowerPoint!)
+With the docs in place, we built a static HTML prototype on a working branch of my existing GitHub Pages repo, since `main` is a Jekyll site that publishes on every merge. Working right in the repo mattered: plenty of edits were faster by hand than by prompting, and the art had to come from outside Claude. (I did try Claude-drawn vector art. It looked like Corel Graphics had taken over PowerPoint!)
 
-Now juggling between GitHub App to read my artwork prompts doc one artifact at a time, Gemini App to copy/paste Nano Banana prompts and download generated images, and GitHub in the browser (the only way I could bulk upload all 18 seed images), I was giving tab switching on my phone a real workout! I did have to pop over to desktop to review and rename all the filenames to match their respective intent -- though I could have easily had Claude do that, it turns out! After all, it still burned some tokens checking my work 😂
+Then came the art run: the GitHub app open to read my artwork-prompts doc one asset at a time, the Gemini app to paste Nano Banana prompts and download the results, and GitHub in the browser, the only way to bulk-upload all 18 images. My phone's tab switcher got a real workout. I hopped over to desktop to rename every file to match its intent, then learned Claude could have done that for me. It burned tokens double-checking my work anyway 😂
 
-With artwork generated against green pixel background, Claude whipped up a .py script to convert them to proper transparency and compress for web delivery.
+Every asset was painted on a green chroma background, so Claude wrote a Python pipeline to key them. It unmixes each pixel against a local key-colour field (so soft gradients and interior holes survive), despills the green fringe, and exports AVIF and WebP at 1× and 2×. Eighteen masters become 80 web-ready files in about 45 seconds, byte-for-byte reproducible. The site itself is plain modern CSS and a little vanilla JavaScript, with no framework and no bundler, and every word on the page is live HTML over the paintings.
 
-Then Claude and I had a little discussion about replace or launch from working branch, and we both agreed on the cheaper, simpler benefits of keeping in Jekyll and merging into and launching from main.
+Then Claude and I weighed a rewrite against staying on Jekyll, and we agreed that keeping Jekyll and launching straight from `main` was cheaper and simpler.
 
-I jumped in the shower and before I was out, my new site was launched!
+I jumped in the shower, and before I was out, my new site was live.
 
 ## Epilogue
 
-At a concert, I'm showing this off to my son, and he pointed out my bad UX of having the header icons stay floating over subpage content. In my elation to have seen through my original 15 year old vision, I overlooked the basic UX review 😅 Life lesson: if it comes too easy, it's too easy to overlook the common details.
-
-Fortunately, it will also be really simple to overcome if I ever feel like coming back to it 😉
+At a concert, I showed it off to my son, and he filed the first bug report: the header sign and nav stay floating over subpage content as you scroll. Good catch, and it's first in line for the next pass. Ship fast, then hand it to your toughest critic 😉
