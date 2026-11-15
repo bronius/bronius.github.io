@@ -3,13 +3,16 @@ layout: post
 title: "If the FAA Grounds You, Let Your Dreams Take Flight!"
 date: 2026-11-15 10:20:57 -0500
 categories:
+description: "Stuck at Austin-Bergstrom during the November 13, 2026 FAA nationwide ground stop, I finally built the Old West cartoon website I'd sketched 15 years ago, with Claude Code, Gemini Nano Banana and Jekyll on GitHub Pages."
+image: /assets/images/bronius-com-old-west-redesign.jpg
 ---
 
 **New!** From the project lab of Bronius Motekaitis, I present <em>Texas-style web design!</em>:
 
 <div class="media-placeholder">
-  <img src="{{ "/assets/images/mic-deffects-screenshot-remixed.png" | relative_url }}"
-       alt="Mic (d)Effects app screenshot">
+  <img src="{{ "/assets/images/bronius-com-old-west-redesign.jpg" | relative_url }}"
+       width="1200" height="750"
+       alt="The redesigned bronius.com home page: a hand-painted Old West main street seen from a wooden porch, with a hanging Bronius sign, cloud navigation and wooden signposts">
 </div>
 Just launched: <a href="https://bronius.com">https://bronius.com</a>. My personal website on vanity domain that I've had since 2000 but got around to refreshing while waiting for a flight delay.
 
@@ -21,7 +24,11 @@ When I graduated with a Bachelor of Computer Science from Sam Houston State Univ
 
 I did not know then that it was ADHD driving these zany ideas that sounded like gold to me but would wouldn't amount to a hill of beans and misprioritization to others. I just thought it was spunky youth, undiscovered talent, and the rest of the world can go stub their toe for not seeing it.
 
-Fast forward to Friday, November 13, 2026, part of my family gathered in Austin Bergstrom International Airport waiting for a flight that would be cancelled due to the historic FAA nationwide ground stop. The free mind space and time from it, coinciding with Claude Code and GitHub at my fingertips, the idea returned to me and spring to life!
+### Grounded at AUS on Friday the 13th
+
+Fast forward to Friday, November 13, 2026. Part of my family was waiting at Austin-Bergstrom International Airport (AUS) when the departure board started turning red. At 3:54 p.m. Eastern, the FAA issued a [nationwide ground stop](https://www.cbsnews.com/news/faa-issues-nationwide-ground-stop/): every departing flight in the United States held at the gate after a communications failure hit the Air Route Traffic Control Centers that run the country's en-route airspace. It was only the second nationwide ground stop since 9/11 (the last was the January 2023 NOTAM outage). The stop lasted a bit over four hours, FlightAware counted more than 9,000 cancellations by the end of the day, and ours was one of them.
+
+All around us, phones were out, rebooking lines were forming, and everyone was refreshing their airline app. I did the math instead. No plane was going anywhere, nothing I did would change that, and I had a phone, a charger, and a block of time nobody could schedule over. So I opened Claude Code and GitHub and took a 15-year-old idea off the shelf. While the national airspace rebooted, I booted up a website.
 
 ## Process
 
