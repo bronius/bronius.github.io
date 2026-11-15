@@ -4,15 +4,19 @@ title: "If the FAA Grounds You, Let Your Dreams Take Flight!"
 date: 2026-11-15 10:20:57 -0600
 categories:
 description: "Stuck at Austin-Bergstrom during the November 13, 2026 FAA nationwide ground stop, I finally built the Old West cartoon website I'd sketched 15 years ago, with Claude Code, Gemini Nano Banana and Jekyll on GitHub Pages."
-image: /assets/images/bronius-com-old-west-redesign.jpg
+image:
+  path: /assets/images/bronius-com-old-west-redesign-og.jpg
+  width: 1200
+  height: 630
+  alt: "The hanging Bronius sign on a cartoon Old West general store porch"
 ---
 
 **New!** From the project lab of Bronius Motekaitis: <em>Texas-style web design!</em>
 
 <div class="media-placeholder">
   <img src="{{ "/assets/images/bronius-com-old-west-redesign.jpg" | relative_url }}"
-       width="1200" height="750"
-       alt="The redesigned bronius.com home page: a hand-painted Old West main street seen from a wooden porch, with a hanging Bronius sign, cloud navigation and wooden signposts">
+       width="1200" height="896"
+       alt="A hand-painted cartoon Old West main street seen from a general store porch, with a wooden Bronius sign hanging from rope over the boardwalk">
 </div>
 
 Just launched: the all-new <a href="https://bronius.com">bronius.com</a>, a vanity domain I've owned since 2000, rebuilt in an afternoon the FAA handed me for free.
