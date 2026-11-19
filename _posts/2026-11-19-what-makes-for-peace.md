@@ -8,6 +8,8 @@ description: "If you only knew what makes for peace… A short morning reflectio
 
 > *"If you only knew what makes for peace…"*
 
-Most of us figure we know what peace costs: the shouting stops, somebody wins, everybody goes home. This morning's reflection works out the price differently, and the bill lands somewhere you wouldn't expect.
+Many of us have some thoughts about what peace costs: the shouting stops, somebody wins, everybody goes home. This morning's reflection works out the price of peace as justice, but justice looka very different from what we might have been shown over the years.
 
-Pour a coffee and give it a listen. ▶ [This morning's reflection](https://youtu.be/qFVcUycrvMA?si=VaZUOG9DNgK0T8x9)
+Pour a coffee and give it a 5 minute listen. ▶ [This morning's reflection](https://youtu.be/qFVcUycrvMA?si=VaZUOG9DNgK0T8x9)
+
+What do you think?
