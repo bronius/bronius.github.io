@@ -19,7 +19,7 @@ image:
 
 > *"If you only knew what makes for peace…"*
 
-Many of us have some thoughts about what peace costs: the shouting stops, somebody wins, everybody goes home. This morning's reflection works out the price of peace as justice, but justice looka very different from what we might have been shown over the years.
+Many of us have some thoughts about what peace costs: the shouting stops, somebody wins, everybody goes home. This morning's reflection works out the price of peace as justice, but justice looks very different from what we might have been shown over the years.
 
 Pour a coffee and give it a 5 minute listen. ▶ [This morning's reflection](https://youtu.be/qFVcUycrvMA?si=VaZUOG9DNgK0T8x9)
 
