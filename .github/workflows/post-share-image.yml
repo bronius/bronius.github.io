@@ -1,0 +1,33 @@
+name: Post share image
+
+on:
+  pull_request:
+    paths: ["_posts/**"]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Every changed post has an image.path that exists
+        run: |
+          fail=0
+          for f in $(git diff --name-only --diff-filter=AM "origin/${{ github.base_ref }}...HEAD" -- '_posts/*'); do
+            fm=$(awk 'NR==1&&/^---/{on=1;next} on&&/^---/{exit} on' "$f")
+            path=$(printf '%s\n' "$fm" | awk '/^image:/{img=1;next} img&&/^[^ ]/{img=0} img&&/^ +path:/{sub(/^ +path: */,""); gsub(/"/,""); print; exit}')
+            if [ -z "$path" ]; then
+              echo "::error file=$f::No image.path in front matter (social share card). See _templates/post.md."
+              fail=1
+            elif [ ! -f ".${path}" ]; then
+              echo "::error file=$f::image.path ${path} doesn't exist in the repo."
+              fail=1
+            else
+              echo "ok  $f -> $path"
+            fi
+          done
+          exit $fail
